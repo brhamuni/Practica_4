@@ -30,3 +30,11 @@ void Ruta::setOrigin(Aeropuerto *origin) {
 void Ruta::setCompany(Aerolinea *company) {
     Ruta::company = company;
 }
+
+Vuelo *Ruta::getFlightRou() const {
+    return flightRou;
+}
+
+void Ruta::setFlightRou(Vuelo *flightRou) {
+    Ruta::flightRou = flightRou;
+}

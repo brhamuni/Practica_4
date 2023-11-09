@@ -1,15 +1,16 @@
 #include "Vuelo.h"
 
-Vuelo::Vuelo():flightNumb(""),plane(""),datoMeteo(""),fecha(){
+Vuelo::Vuelo():flightNumb(""),plane(""),datoMeteo(""),fecha(),linkaero(),airpOrigin(),airpDestin(){
 
 }
 
 Vuelo::Vuelo(std::string flightNumb, std::string plane, std::string datoMeteo, Fecha fecha):
-        flightNumb(flightNumb),plane(plane),datoMeteo(datoMeteo),fecha(fecha){
+        flightNumb(flightNumb),plane(plane),datoMeteo(datoMeteo),fecha(fecha),linkaero(),airpOrigin(),airpDestin(){
 }
 
 Vuelo::Vuelo(const Vuelo &orig):
-        flightNumb(orig.flightNumb),plane(orig.plane),datoMeteo(orig.datoMeteo),fecha(orig.fecha){
+        flightNumb(orig.flightNumb),plane(orig.plane),datoMeteo(orig.datoMeteo),fecha(orig.fecha),
+        linkaero(orig.linkaero), airpDestin(orig.airpDestin),airpOrigin(orig.airpOrigin){
 }
 
 const std::string &Vuelo::getFlightNumb() const {
@@ -46,4 +47,28 @@ void Vuelo::setFecha(const Fecha &fecha) {
 
 Vuelo::~Vuelo() {
 
+}
+
+Aerolinea *Vuelo::getLinkaero() const {
+    return linkaero;
+}
+
+void Vuelo::setLinkaero(Aerolinea *linkaero) {
+    Vuelo::linkaero = linkaero;
+}
+
+Aeropuerto *Vuelo::getAirpOrigin() const {
+    return airpOrigin;
+}
+
+void Vuelo::setAirpOrigin(Aeropuerto *airpOrigin) {
+    Vuelo::airpOrigin = airpOrigin;
+}
+
+Aeropuerto *Vuelo::getAirpDestin() const {
+    return airpDestin;
+}
+
+void Vuelo::setAirpDestin(Aeropuerto *airpDestin) {
+    Vuelo::airpDestin = airpDestin;
 }

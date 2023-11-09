@@ -15,6 +15,12 @@ using namespace std;
 class  Aerolinea;
 class Ruta {
 private:
+public:
+    Vuelo *getFlightRou() const;
+
+    void setFlightRou(Vuelo *flightRou);
+
+private:
     Aeropuerto *destination;
     Aeropuerto *origin;
     Aerolinea *company;

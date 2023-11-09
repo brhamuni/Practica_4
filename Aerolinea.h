@@ -17,7 +17,7 @@ private:
     string pais;
     bool activo;
     std::deque<Ruta*> aerorutas;
-    std::vector<Vuelo*> flights;
+    std::multimap<string,Vuelo*> flights;
 public:
     //Constructor por defecto
     Aerolinea();

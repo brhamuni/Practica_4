@@ -38,6 +38,17 @@ public:
 
     void setFecha(const Fecha &fecha);
 
+    Aerolinea *getLinkaero() const;
+
+    void setLinkaero(Aerolinea *linkaero);
+
+    Aeropuerto *getAirpOrigin() const;
+
+    void setAirpOrigin(Aeropuerto *airpOrigin);
+
+    Aeropuerto *getAirpDestin() const;
+
+    void setAirpDestin(Aeropuerto *airpDestin);
 
 };
 
