@@ -17,4 +17,6 @@ add_executable(PR4 main.cpp
         VuelaFlight.h
         VuelaFlight.cpp
         Aerolinea.cpp
-        VuelaFlight.cpp)
+        VuelaFlight.cpp
+        Vuelo.h
+        Vuelo.cpp)

@@ -25,16 +25,16 @@ std::vector<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
     //Creo un vector dinamico de aeropuertos que en el que voy a devolver los aeropuertos
     std::vector<Aeropuerto*> vAeroOrig;
     //Creo un arbol para almacenar los aeropuertos de origen
-    std::map<string ,Aeropuerto*> arbolDeAeroOrig;
+    std::map<string,Aeropuerto> arbolDeAeroOrig;
     //Obtengo   aerorutas
-    std::vector<Ruta*> aerorutasMetodo = getAerorutas();
+    std::deque<Ruta*> aerorutasMetodo = getAerorutas();
     for (int i = 0; i < aerorutasMetodo.size(); ++i) {
-        Aeropuerto *aeropuerto = aerorutasMetodo[i]->getOrigin();
+        pair<string,Aeropuerto> par(aerorutasMetodo[i]->getOrigin()->getIata(),Aeropuerto (*aerorutasMetodo[i]->getOrigin()));
         //Si en el árbol el dato no esta repetido
-            if(!arbolDeAeroOrig.insert(aeropuerto)){
+        arbolDeAeroOrig.insert(par);
+            if(par.second==arbolDeAeroOrig.end()->second){
                 //Insertamos en el arbol
-                arbolDeAeroOrig.insert(aeropuerto);
-                vAeroOrig.push_back(aeropuerto);
+                vAeroOrig.push_back(&par.second);
             }
     }
 
@@ -167,7 +167,7 @@ void Aerolinea::setActivo(bool activo) {
  * @brief Getter Con Acceso al private aerorutas
  * @return
  */
-const std::vector<Ruta *> &Aerolinea::getAerorutas() const {
+const std::deque<Ruta *> &Aerolinea::getAerorutas() const {
     return aerorutas;
 }
 /**
@@ -175,7 +175,7 @@ const std::vector<Ruta *> &Aerolinea::getAerorutas() const {
  * @param aerorutas
  */
 
-void Aerolinea::setAerorutas(const std::vector<Ruta *> &aerorutas) {
+void Aerolinea::setAerorutas(const std::deque<Ruta *> &aerorutas) {
     Aerolinea::aerorutas = aerorutas;
 }
 

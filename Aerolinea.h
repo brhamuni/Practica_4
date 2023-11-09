@@ -2,11 +2,13 @@
 #define PRACTICA_3_AEROLINEA_H
 #include <string>
 #include <vector>
+#include <deque>
 #include <list>
 #include <map>
 #include "Aeropuerto.h"
 using  namespace  std;
 class Ruta;
+class Vuelo;
 class Aerolinea {
 private:
     unsigned int id;
@@ -14,7 +16,8 @@ private:
     string nombre;
     string pais;
     bool activo;
-    std::vector<Ruta*> aerorutas;
+    std::deque<Ruta*> aerorutas;
+    std::vector<Vuelo*> flights;
 public:
     //Constructor por defecto
     Aerolinea();
@@ -55,9 +58,9 @@ public:
     //Setter Activo
     void setActivo(bool activo);
     //Getter de variable privada aeroruta
-    const std::vector<Ruta *> &getAerorutas() const;
+    const std::deque<Ruta *> &getAerorutas() const;
     //Setter Aerorutas
-    void setAerorutas(const std::vector<Ruta *> &aerorutas);
+    void setAerorutas(const std::deque<Ruta *> &aerorutas);
 };
 
 
