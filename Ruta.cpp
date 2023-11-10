@@ -48,3 +48,7 @@ bool Ruta::addVuelo(Vuelo *v) {
     }
     return false;
 }
+
+long Ruta::getNumVuelos() {
+    return  flightRou.size();
+}

@@ -49,6 +49,10 @@ public:
     void setFlightRou(list<Vuelo*>flightRou);
 
     bool addVuelo(Vuelo* v);
+
+    long int  getNumVuelos();
+
+    vector<Vuelo*> getVuelos();
 };
 
 
