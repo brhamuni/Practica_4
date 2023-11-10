@@ -82,7 +82,8 @@ public:
 		return dia == f.dia && mes == f.mes && anio == f.anio; 
 	}
 	/** Comparar fechas */
-	bool operator<(const Fecha &f);
+	bool operator<( Fecha &f);
+    bool operator>( Fecha &f);
 	/** Asignar fechas */
 	Fecha &operator=(const Fecha &f);
 

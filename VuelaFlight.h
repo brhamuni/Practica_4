@@ -15,7 +15,7 @@
  */
 
 class VuelaFlight {
-private:
+public:
     //Declaramos los metodo publicos y constructores
     std::vector<Aeropuerto> aeropuertos;
     std::list<Ruta> rutas;

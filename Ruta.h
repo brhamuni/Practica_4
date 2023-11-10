@@ -3,6 +3,8 @@
 #include <string>
 #include "Aeropuerto.h"
 #include "Aerolinea.h"
+#include <list>
+#include "Vuelo.h"
 using namespace std;
 /**
  *@file Ruta.h
@@ -14,24 +16,19 @@ using namespace std;
  */
 class  Aerolinea;
 class Ruta {
-private:
-public:
-    Vuelo *getFlightRou() const;
-
-    void setFlightRou(Vuelo *flightRou);
 
 private:
     Aeropuerto *destination;
     Aeropuerto *origin;
     Aerolinea *company;
-    Vuelo *flightRou;
+    list<Vuelo*> flightRou;
 public:
     //Constructor por defecto
     Ruta();
     //Constructor copia
     Ruta(const Ruta &orig);
     //Constructor paramerizado
-    Ruta(Aerolinea *company,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr);
+    Ruta(Aerolinea *company,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr, list<Vuelo*>  flightRou=list<Vuelo*>());
     //Destructor
     virtual ~Ruta();
 
@@ -46,6 +43,12 @@ public:
     void setOrigin(Aeropuerto *origin);
 
     void setCompany(Aerolinea *company);
+
+    list<Vuelo*> getFlightRou() const;
+
+    void setFlightRou(list<Vuelo*>flightRou);
+
+    bool addVuelo(Vuelo* v);
 };
 
 

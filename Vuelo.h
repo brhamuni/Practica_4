@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 #include "fecha.h"
+#include "Aeropuerto.h"
+#include "Ruta.h"
 #include "Aerolinea.h"
 
 class Vuelo {
@@ -17,7 +19,8 @@ private:
 
 public:
     Vuelo();
-    Vuelo(std::string flightNumb,std::string plane,std::string datoMeteo,Fecha fecha);
+    Vuelo(std::string flightNumb,std::string plane,std::string datoMeteo,Fecha fecha,
+          Aerolinea *aerolinea, Aeropuerto*orig, Aeropuerto*dest);
     Vuelo(const Vuelo &orig);
 
     virtual ~Vuelo();
@@ -34,7 +37,7 @@ public:
 
     void setDatoMeteo(const std::string &datoMeteo);
 
-    const Fecha &getFecha() const;
+    Fecha &getFecha();
 
     void setFecha(const Fecha &fecha);
 

@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 #include <deque>
-#include <list>
 #include <map>
 #include "Aeropuerto.h"
+#include "fecha.h"
+
 using  namespace  std;
 class Ruta;
 class Vuelo;
+
 class Aerolinea {
 private:
     unsigned int id;
@@ -61,6 +63,11 @@ public:
     const std::deque<Ruta *> &getAerorutas() const;
     //Setter Aerorutas
     void setAerorutas(const std::deque<Ruta *> &aerorutas);
+
+    Vuelo* addVuelo( Vuelo* v);
+
+    vector<Vuelo*> getVuelos(std::string fNumber);
+    vector<Vuelo*> getVuelos( Fecha fIni,  Fecha fFin);
 };
 
 

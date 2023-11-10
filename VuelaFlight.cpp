@@ -121,11 +121,11 @@ void VuelaFlight::addAerolinea(std::string icao,Aerolinea aerolinea) {
  * @return
  */
 Aerolinea &VuelaFlight::buscaAerolinea(std::string icaoAerolinea) {
-    std::map<string ,Aerolinea>::iterator t = airlines.find(icaoAerolinea);
-    if(!(&t)){
+    std::map<string ,Aerolinea>::iterator itAerolinea = airlines.find(icaoAerolinea);
+    if(!(&itAerolinea)){
         throw std::invalid_argument("No se ha encontrado la aerolinea");
     }
-    return  t->second;
+    return  *(&itAerolinea->second);
 }
 /**
  * @brief Metodo que busca las Aerolineas Activas
@@ -139,7 +139,6 @@ std::vector<Aerolinea*> VuelaFlight::buscaAerolineasActiva() {
             devuelveAerolinea.push_back(&buscaAerolinea->second);
         }
     }
-
     return  devuelveAerolinea;
 
 }
@@ -167,8 +166,6 @@ std::vector<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
  */
 void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
 #pragma  region   Buscar en tiempo logarítmico la aerolínea que hace la ruta en VuelaFlight::work
-    Aerolinea aero2;
-    aero2.setIcao(icaoRuta);
     std::map<string,Aerolinea>::iterator aerolineaEncontrada = airlines.find(icaoRuta);
 #pragma  endregion
 #pragma region Buscar en tiempo logarítmico en  PR2 + añadir nueva ruta

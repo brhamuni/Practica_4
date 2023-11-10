@@ -4,8 +4,8 @@ Ruta::~Ruta() {
 }
 
 Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr) {}
-Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination) {}
-Ruta::Ruta( Aerolinea  *aerolinea, Aeropuerto *dest, Aeropuerto *orig) :company(aerolinea),origin(orig),destination(dest) {}
+Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination),flightRou(orig.flightRou) {}
+Ruta::Ruta( Aerolinea *company,Aeropuerto *dest,Aeropuerto* orig, list<Vuelo*>  flightRou) :company(company),origin(orig),destination(dest),flightRou(flightRou) {}
 
 Aeropuerto *Ruta::getDestination() const {
     return destination;
@@ -31,10 +31,20 @@ void Ruta::setCompany(Aerolinea *company) {
     Ruta::company = company;
 }
 
-Vuelo *Ruta::getFlightRou() const {
+list<Vuelo *> Ruta::getFlightRou() const {
     return flightRou;
 }
 
-void Ruta::setFlightRou(Vuelo *flightRou) {
+void Ruta::setFlightRou(list<Vuelo*>flightRou) {
     Ruta::flightRou = flightRou;
+}
+
+bool Ruta::addVuelo(Vuelo *v) {
+    if(v->getLinkaero()->getIcao()==this->company->getIcao()&&
+    v->getAirpDestin()->getIata()==this->destination->getIata()&&
+    v->getAirpOrigin()->getIata()==this->origin->getIata()){
+        flightRou.push_back(v);
+        return true;
+    }
+    return false;
 }

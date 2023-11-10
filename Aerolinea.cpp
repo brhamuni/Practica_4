@@ -5,17 +5,17 @@
 /**
  * @brief Constructor por defecto
  */
-Aerolinea::Aerolinea():id(0),icao(""),nombre(""),pais(""),activo(false),aerorutas(){}
+Aerolinea::Aerolinea():id(0),icao(""),nombre(""),pais(""),activo(false),aerorutas(),flights(){}
 /**
  * @brief Constructor copia
  * @param orig
  */
-Aerolinea::Aerolinea(const Aerolinea &orig):id(orig.id),icao(orig.icao),nombre(orig.nombre),pais(orig.pais),activo(orig.activo),aerorutas(orig.aerorutas) {}
+Aerolinea::Aerolinea(const Aerolinea &orig):id(orig.id),icao(orig.icao),nombre(orig.nombre),pais(orig.pais),activo(orig.activo),aerorutas(orig.aerorutas),flights(orig.flights) {}
 /**
  * @brief Constructor parametrizado
  * @param orig
  */
-Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string pais, bool activo):id(id),icao(icao),nombre(nombre),pais(pais),activo(activo),aerorutas() {}
+Aerolinea::Aerolinea(int id, std::string icao, std::string nombre, std::string pais, bool activo):id(id),icao(icao),nombre(nombre),pais(pais),activo(activo),aerorutas(),flights() {}
 
 /**
  * @brief Metodo que obtiene los aeropuerto de origen
@@ -30,14 +30,13 @@ std::vector<Aeropuerto*> Aerolinea::getAeropuertosOrig() {
     std::deque<Ruta*> aerorutasMetodo = getAerorutas();
     for (int i = 0; i < aerorutasMetodo.size(); ++i) {
         pair<string,Aeropuerto> par(aerorutasMetodo[i]->getOrigin()->getIata(),Aeropuerto (*aerorutasMetodo[i]->getOrigin()));
-        //Si en el árbol el dato no esta repetido
+        //Insertamos en el árbol para que no haya repetidos
         arbolDeAeroOrig.insert(par);
-            if(par.second==arbolDeAeroOrig.end()->second){
-                //Insertamos en el arbol
-                vAeroOrig.push_back(&par.second);
-            }
     }
-
+    std::map<string,Aeropuerto>::iterator iteradorArbol(arbolDeAeroOrig.begin());
+    for (iteradorArbol; iteradorArbol!=arbolDeAeroOrig.end() ; ++iteradorArbol) {
+        vAeroOrig.push_back(&iteradorArbol->second);
+    }
     return  vAeroOrig;
 
 }
@@ -50,12 +49,13 @@ std::vector<Ruta*> Aerolinea::getRutasAeropuerto(std::string iataAirport) {
     //Vector que vamos a llenar
     std::vector<Ruta*> vRutasAero;
     //Recorremos las rutas de la aerolinea
-    for (int i = 0; i < aerorutas.size(); ++i) {
-        string iataOrig = aerorutas[i]->getOrigin()->getIata();
-        string iataDest = aerorutas[i]->getDestination()->getIata();
+    std::deque<Ruta*>::iterator iterador;
+    for (iterador=aerorutas.begin(); iterador!=aerorutas.end();iterador++) {
+        string iataOrig = (*iterador)->getOrigin()->getIata();
+        string iataDest = (*iterador)->getDestination()->getIata();
         //Si tiene ese iata  insertamos  la ruta
             if(iataOrig == iataAirport ||iataDest == iataAirport ){
-                    vRutasAero.push_back(aerorutas[i]);
+                    vRutasAero.push_back(*iterador);
             }
     }
     //Devolvemos el vector de rutas
@@ -180,5 +180,49 @@ void Aerolinea::setAerorutas(const std::deque<Ruta *> &aerorutas) {
 }
 
 
+Vuelo* Aerolinea::addVuelo( Vuelo *v) {
+    pair<string ,Vuelo*>par(v->getFlightNumb(),v) ;
+    std::deque<Ruta*>::iterator iterator=aerorutas.begin();
+
+    if (!v->getAirpOrigin() || !v->getAirpDestin()|| !v->getLinkaero())
+        return nullptr;
+
+    bool encontrado= false;
+    for (iterator; iterator!=aerorutas.end() && !encontrado; iterator++) {
+
+        if((*iterator)->getOrigin()->getIata()==v->getAirpOrigin()->getIata()&& (*iterator)->getCompany()->icao==v->getLinkaero()->getIcao()&&
+        (*iterator)->getDestination()->getIata()==v->getAirpDestin()->getIata()){
+
+            encontrado=true;
+            (*iterator)->addVuelo(v);
+            flights.insert(par);
+            return par.second;
+        }
+    }
+    return nullptr;
+}
 
 
+vector<Vuelo*> Aerolinea::getVuelos(std::string fNumber) {
+    vector<Vuelo*> vuelosFNumber;
+    multimap<string,Vuelo*>::iterator iterador(flights.lower_bound(fNumber));
+    vuelosFNumber.push_back(iterador->second);
+    for (iterador; iterador!=flights.end() ; iterador++) {
+        if(fNumber==iterador->second->getFlightNumb())
+            vuelosFNumber.push_back(iterador->second);
+    }
+
+    return vuelosFNumber;
+}
+
+vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
+    vector<Vuelo*> vuelosFecha;
+    multimap<string,Vuelo*>::iterator iterador;
+    for (iterador=flights.begin();iterador!=flights.end() ; iterador++) {
+        if ( iterador->second->getFecha()>fIni || iterador->second->getFecha().mismoDia(fIni)&&
+        iterador->second->getFecha()<fFin || iterador->second->getFecha().mismoDia(fFin))
+            vuelosFecha.push_back(iterador->second);
+    }
+
+    return  vuelosFecha;
+}
