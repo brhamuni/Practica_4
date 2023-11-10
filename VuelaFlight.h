@@ -3,6 +3,9 @@
 #include <deque>
 #include "Aeropuerto.h"
 #include "Ruta.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
 
 #ifndef PRACTICA_2_VUELAFLIGHT_H
 #define PRACTICA_2_VUELAFLIGHT_H
@@ -20,6 +23,8 @@ public:
     std::vector<Aeropuerto> aeropuertos;
     std::list<Ruta> rutas;
     std::map<string,Aerolinea> airlines;
+
+    void cargarVuelos(string fichVuelos);
 public:
     //Constructor por defecto
     VuelaFlight();
@@ -58,6 +63,11 @@ public:
     long tamaRutas();
     //Devuelve el tamaño del Arbol
     long tamaWork();
+
+    bool registrarVuelo(string fNumber, string iataAeroOrig, string iataAeroDest, string plane, string datosMeteo, Fecha f);
+
+
+
 
 };
 

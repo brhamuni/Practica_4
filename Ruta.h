@@ -52,7 +52,7 @@ public:
 
     long int  getNumVuelos();
 
-    vector<Vuelo*> getVuelos();
+    list<Vuelo*> getVuelos();
 };
 
 

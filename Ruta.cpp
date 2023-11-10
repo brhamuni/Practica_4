@@ -52,3 +52,7 @@ bool Ruta::addVuelo(Vuelo *v) {
 long Ruta::getNumVuelos() {
     return  flightRou.size();
 }
+
+list<Vuelo *> Ruta::getVuelos() {
+    return flightRou;
+}
