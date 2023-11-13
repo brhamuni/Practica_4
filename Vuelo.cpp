@@ -4,9 +4,8 @@ Vuelo::Vuelo():flightNumb(""),plane(""),datoMeteo(""),fecha(),linkaero(),airpOri
 
 }
 
-Vuelo::Vuelo(std::string flightNumb,std::string plane,std::string datoMeteo,Fecha fecha,
-             Aerolinea *aerolinea, Aeropuerto*orig, Aeropuerto*dest):
-        flightNumb(flightNumb),plane(plane),datoMeteo(datoMeteo),fecha(fecha),linkaero(aerolinea),airpOrigin(orig),airpDestin(dest){
+Vuelo::Vuelo(std::string& flightNumb,std::string& plane,std::string& datoMeteo,Fecha fecha,Aeropuerto*orig, Aeropuerto*dest, Aerolinea* linkaero):
+        flightNumb(flightNumb),plane(plane),datoMeteo(datoMeteo),fecha(fecha),airpOrigin(orig),airpDestin(dest),linkaero(linkaero){
 }
 
 Vuelo::Vuelo(const Vuelo &orig):

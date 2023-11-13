@@ -2,7 +2,13 @@
 /**
  * @brief VuelaFlight
  */
-VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {}
+VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
+    cargarAeropuertos("aeropuertos_v2.csv");
+    cargarAerolineas("aerolineas_v1.csv");
+    cargarVuelos("infovuelos_v1.csv");
+    cargarRutas("rutas_v1.csv");
+}
+
 /**
  * @brief Constructor parametrizado
  * @param vector
@@ -164,7 +170,7 @@ std::vector<Aerolinea*> VuelaFlight::getAerolineasPais(std::string idPais) {
  * @param origen2
  * @param destino2
  */
-void VuelaFlight::cargarRutas(string icaoRuta,string origen2, string destino2){
+void VuelaFlight::registrarRutas(string icaoRuta, string origen2, string destino2){
 #pragma  region   Buscar en tiempo logarítmico la aerolínea que hace la ruta en VuelaFlight::work
     std::map<string,Aerolinea>::iterator aerolineaEncontrada = airlines.find(icaoRuta);
 #pragma  endregion
@@ -215,6 +221,106 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
     std::string fila;
     int contador = 0;
 
+    std::string flightNumber;
+    std::string dep_airport_code;
+    std::string arr_airport_code;
+    std::string plane;
+    std::string dep_weather_desc;
+    std::string dep_date;
+
+
+    is.open(fichVuelos); //carpeta de proyecto
+    if (is.good()) {
+
+        clock_t lectura = clock();
+
+        while (getline(is, fila)) {
+
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+
+                columnas.str(fila);
+
+                //formato de fila: flightNumber;dep_airport_code;arr_airport_code;plane;dep_weather_desc;dep_date
+
+                getline(columnas, flightNumber, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, dep_airport_code, ';');
+                getline(columnas, arr_airport_code, ';');
+                getline(columnas, plane, ';');
+                getline(columnas, dep_weather_desc, ';');
+                getline(columnas, dep_date, ';');
+
+                string anio=dep_date.substr(6,2);
+                string mes=dep_date.substr(3,2);
+                string dia=dep_date.substr(0,2);
+                int anioint= stoi(anio);
+                int mesint= stoi(mes);
+                int diaint= stoi(dia);
+                Fecha fecha(diaint,mesint,anioint);
+                registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha);
+
+                fila = "";
+                columnas.clear();
+            }
+        }
+
+        is.close();
+
+    } else {
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+}
+
+bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig, std::string &iataAeroDest,
+                                 std::string &plane, std::string &datosMeteo, Fecha f) {
+
+    std::vector<Aeropuerto>::iterator orig=aeropuertos.begin();
+    Aeropuerto origen;
+    origen.setIata(iataAeroOrig);
+    orig= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
+
+    std::vector<Aeropuerto>::iterator dest=aeropuertos.begin();
+    Aeropuerto destino;
+    destino.setIata(iataAeroDest);
+    dest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
+
+    std::map<string,Aerolinea>::iterator aerolinea=airlines.find(fNumber.substr(0,3));
+
+    if (!(&aerolinea->second) || !(&dest) || !(&orig)){
+        Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolinea->second));
+        aerolinea->second.addVuelo(&vuelo);
+        return true;
+    }else
+        return false;
+}
+
+vector<Vuelo*> VuelaFlight::buscaVuelos(std::string fnumber) {
+    map<string,Aerolinea>::iterator iterador=airlines.begin();
+    vector<Vuelo*> vuelos;
+    for (iterador; iterador!=airlines.end() ; iterador++) {
+        vector<Vuelo*>aux =iterador->second.getVuelos(fnumber);
+        vuelos.insert(vuelos.end(),aux.begin(),aux.end());
+    }
+
+    return vuelos;
+}
+
+vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha fecha) {
+    map<string,Aerolinea>::iterator iterador;
+    iterador=airlines.find(icaoAerolinea);
+    iterador->second.getVuelos(fecha,fecha);
+}
+
+list<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
+    
+}
+
+void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {
+    std::ifstream is;
+    std::stringstream columnas;
+    std::string fila;
+    int contador = 0;
+
     std::string id;
     std::string iata;
     std::string tipo;
@@ -227,7 +333,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
     float latitud, longitud;
 
 
-    is.open("aeropuertos_v2.csv"); //carpeta de proyecto
+    is.open(fichAeropuertos); //carpeta de proyecto
     if (is.good()) {
 
         clock_t lectura = clock();
@@ -255,11 +361,11 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
                 longitud = std::stof(longitud_str);
 
 
-                UTM *utm = new UTM(latitud, longitud);
+                UTM utm(latitud, longitud);
+                Aeropuerto aeropuerto(id,iata,tipo,nombre,continente,iso_pais,utm);
+                this->aeropuertos.push_back(aeropuerto);
 
-                //vuelaFlight.addNuevoAeropuerto(*aeropuerto);
 
-                delete utm;
                 fila = "";
                 columnas.clear();
             }
@@ -272,11 +378,106 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
     }
 }
 
-bool
-VuelaFlight::registrarVuelo(std::string fNumber, std::string iataAeroOrig, std::string iataAeroDest, std::string plane,
-                            std::string datosMeteo, Fecha f) {
-    std::vector<Aeropuerto>::iterator dest(std::lower_bound(this->aeropuertos.begin(), this->aeropuertos.end(),iataAeroDest));
+void VuelaFlight::cargarRutas(std::string fichRutas) {
+    clock_t lecturaRutas = clock();
+    std::ifstream is;
+    std::stringstream columnas;
+    std::string fila;
+    int contador = 0;
 
+    std::string aerolinea;
+    std::string aero_origen;
+    std::string aero_destino;
+    std::sort(aeropuertos.begin(), aeropuertos.end());
 
+    is.open(fichRutas); //carpeta de proyecto
+    if (is.good()) {
+
+        clock_t lecturaRutas = clock();
+
+        while (getline(is, fila)) {
+
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+
+                columnas.str(fila);
+
+                //formato de fila: airline;airport_orig;airport_dest
+
+                getline(columnas, aerolinea, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, aero_origen, ';');
+                getline(columnas, aero_destino, ';');
+
+                fila = "";
+                columnas.clear();
+
+                registrarRutas(aerolinea,aero_origen,aero_destino);
+            }
+        }
+
+        is.close();
+
+        std::cout << "Tiempo lectura de las rutas: " << ((clock() - lecturaRutas) / (float) CLOCKS_PER_SEC)
+                  << " segs." << std::endl;
+    } else {
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
 }
 
+void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
+    clock_t lecturaAerolineas = clock();
+    std::ifstream is;
+    std::stringstream columnas;
+    std::string fila;
+    int contador = 0;
+
+    std::string ID;
+    std::string ICAO;
+    std::string Name;
+    std::string Country;
+    std::string Active;
+    std::sort(aeropuertos.begin(), aeropuertos.end());
+
+    is.open(fichAerolineas); //carpeta de proyecto
+    if (is.good()) {
+
+        clock_t lecturaRutas = clock();
+
+        while (getline(is, fila)) {
+
+            //¿Se ha leído una nueva fila?
+            if (fila != "") {
+
+                columnas.str(fila);
+
+                //formato de fila: ID;ICAO;Name;Country;Active
+
+                getline(columnas, ID, ';'); //leemos caracteres hasta encontrar y omitir ';'
+                getline(columnas, ICAO, ';');
+                getline(columnas, Name, ';');
+                getline(columnas, Country, ';');
+                getline(columnas, Active, ';');
+
+                unsigned int IDint = std::stoi(ID);
+                bool Activebool;
+                if (Active == "Y")
+                    Activebool = true;
+                else
+                    Activebool = false;
+
+                fila = "";
+                columnas.clear();
+                pair<string,Aerolinea> par(ICAO,Aerolinea(IDint, ICAO, Name, Country, Activebool));
+                airlines.insert(par);
+            }
+
+        }
+
+        is.close();
+
+        std::cout << "Tiempo lectura de las work: " << ((clock() - lecturaAerolineas) / (float) CLOCKS_PER_SEC)
+                  << " segs." << std::endl;
+    } else {
+        std::cout << "Error de apertura en archivo" << std::endl;
+    }
+}

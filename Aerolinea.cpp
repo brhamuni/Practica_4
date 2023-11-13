@@ -187,16 +187,14 @@ Vuelo* Aerolinea::addVuelo( Vuelo *v) {
     if (!v->getAirpOrigin() || !v->getAirpDestin()|| !v->getLinkaero())
         return nullptr;
 
-    bool encontrado= false;
-    for (iterator; iterator!=aerorutas.end() && !encontrado; iterator++) {
+    for (iterator; iterator!=aerorutas.end(); iterator++) {
 
         if((*iterator)->getOrigin()->getIata()==v->getAirpOrigin()->getIata()&& (*iterator)->getCompany()->icao==v->getLinkaero()->getIcao()&&
         (*iterator)->getDestination()->getIata()==v->getAirpDestin()->getIata()){
 
-            encontrado=true;
             (*iterator)->addVuelo(v);
             flights.insert(par);
-            return par.second;
+            return &(*par.second);
         }
     }
     return nullptr;

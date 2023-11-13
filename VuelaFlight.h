@@ -25,6 +25,9 @@ public:
     std::map<string,Aerolinea> airlines;
 
     void cargarVuelos(string fichVuelos);
+    void cargarRutas(string fichRutas);
+    void cargarAeropuertos(string fichVuelos);
+    void cargarAerolineas(string fichAerolineas);
 public:
     //Constructor por defecto
     VuelaFlight();
@@ -54,7 +57,7 @@ public:
     //Metodo que obtiene la aerolineas por el Pais
     std::vector<Aerolinea*> getAerolineasPais(string idPais);
     //Metodo que Carga las Rutas
-    void cargarRutas(string icaoRuta,string origen2, string destino2);
+    void registrarRutas(string icaoRuta, string origen2, string destino2);
     //Metodo que ordenar Aeropuertos
     void ordenarAeropuertos();
     //Devuelve el tamaño de aeropuertos
@@ -64,9 +67,12 @@ public:
     //Devuelve el tamaño del Arbol
     long tamaWork();
 
-    bool registrarVuelo(string fNumber, string iataAeroOrig, string iataAeroDest, string plane, string datosMeteo, Fecha f);
+    bool registrarVuelo(string& fNumber, string& iataAeroOrig, string& iataAeroDest, string& plane, string& datosMeteo, Fecha f);
 
+    vector<Vuelo*> buscaVuelos(string fnumber);
+    vector<Vuelo*> vuelosOperadorPor(string icaoAerolinea, Fecha fecha);
 
+    list<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
 
 
 };

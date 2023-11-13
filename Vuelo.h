@@ -19,8 +19,7 @@ private:
 
 public:
     Vuelo();
-    Vuelo(std::string flightNumb,std::string plane,std::string datoMeteo,Fecha fecha,
-          Aerolinea *aerolinea, Aeropuerto*orig, Aeropuerto*dest);
+    Vuelo(std::string& flightNumb,std::string& plane,std::string& datoMeteo,Fecha fecha,Aeropuerto*orig, Aeropuerto*dest, Aerolinea* linkaero);
     Vuelo(const Vuelo &orig);
 
     virtual ~Vuelo();

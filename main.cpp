@@ -18,6 +18,11 @@
  */
 
 int main(int argc, const char * argv[]) {
+    VuelaFlight vuelaFlight;
+    cout<<"Hay un total de: "
+    <<vuelaFlight.aeropuertos.size()<<" aeropuertos, "
+    <<vuelaFlight.airlines.size()<<" aerolineas, "
+    <<vuelaFlight.rutas.size()<<" rutas,"<<std::endl;
 
     return 0;
 }
