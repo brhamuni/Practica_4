@@ -203,11 +203,12 @@ Vuelo* Aerolinea::addVuelo( Vuelo *v) {
 
 vector<Vuelo*> Aerolinea::getVuelos(std::string fNumber) {
     vector<Vuelo*> vuelosFNumber;
-    multimap<string,Vuelo*>::iterator iterador(flights.lower_bound(fNumber));
-    vuelosFNumber.push_back(iterador->second);
-    for (iterador; iterador!=flights.end() ; iterador++) {
-        if(fNumber==iterador->second->getFlightNumb())
-            vuelosFNumber.push_back(iterador->second);
+    multimap<string,Vuelo*>::iterator iterador=flights.find(fNumber);
+    if(iterador!=flights.end()) {
+        for (iterador; iterador != flights.end(); iterador++) {
+            if (fNumber == iterador->first)
+                vuelosFNumber.push_back(*(&iterador->second));
+        }
     }
 
     return vuelosFNumber;
@@ -223,4 +224,12 @@ vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
     }
 
     return  vuelosFecha;
+}
+
+const multimap<string, Vuelo *> &Aerolinea::getFlights() const {
+    return flights;
+}
+
+void Aerolinea::setFlights(const multimap<string, Vuelo *> &flights) {
+    Aerolinea::flights = flights;
 }

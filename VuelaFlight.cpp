@@ -231,8 +231,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
 
     is.open(fichVuelos); //carpeta de proyecto
     if (is.good()) {
-
-        clock_t lectura = clock();
+        clock_t lecturaVuelos = clock();
 
         while (getline(is, fila)) {
 
@@ -265,6 +264,8 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
         }
 
         is.close();
+        std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaVuelos) / (float) CLOCKS_PER_SEC)
+                  << " segs." << std::endl;
 
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
@@ -286,7 +287,7 @@ bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig
 
     std::map<string,Aerolinea>::iterator aerolinea=airlines.find(fNumber.substr(0,3));
 
-    if (!(&aerolinea->second) || !(&dest) || !(&orig)){
+    if (!(&aerolinea) || !(&dest) || !(&orig)){
         Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolinea->second));
         aerolinea->second.addVuelo(&vuelo);
         return true;
@@ -312,7 +313,18 @@ vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha 
 }
 
 list<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
-    
+    std::map<string,Aerolinea>::iterator iterador;
+    list<string> identificadores;
+    for(iterador=airlines.begin();iterador!=airlines.end();iterador++){
+        std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
+        std::multimap<string,Vuelo*>::iterator iteradorvuelos;
+        for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
+            if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest && iteradorvuelos->second->getAirpOrigin()->getIsoPais()==paisOrig)
+                identificadores.push_back(iteradorvuelos->second->getFlightNumb());
+        }
+    }
+
+    return identificadores;
 }
 
 void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {
@@ -336,7 +348,7 @@ void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {
     is.open(fichAeropuertos); //carpeta de proyecto
     if (is.good()) {
 
-        clock_t lectura = clock();
+        clock_t lecturaAeropuertos = clock();
 
         while (getline(is, fila)) {
 
@@ -373,13 +385,15 @@ void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {
 
         is.close();
 
+        std::cout << "Tiempo lectura de los aeropuertos: " << ((clock() - lecturaAeropuertos) / (float) CLOCKS_PER_SEC)
+                  << " segs." << std::endl;
+
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
 }
 
 void VuelaFlight::cargarRutas(std::string fichRutas) {
-    clock_t lecturaRutas = clock();
     std::ifstream is;
     std::stringstream columnas;
     std::string fila;
@@ -475,7 +489,7 @@ void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
 
         is.close();
 
-        std::cout << "Tiempo lectura de las work: " << ((clock() - lecturaAerolineas) / (float) CLOCKS_PER_SEC)
+        std::cout << "Tiempo lectura de las aerolineas: " << ((clock() - lecturaAerolineas) / (float) CLOCKS_PER_SEC)
                   << " segs." << std::endl;
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
