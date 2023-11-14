@@ -4,6 +4,7 @@
 #include "Aeropuerto.h"
 #include "Ruta.h"
 #include <iostream>
+#include <set>
 #include <fstream>
 #include <sstream>
 
@@ -26,7 +27,7 @@ public:
 
     void cargarVuelos(string fichVuelos);
     void cargarRutas(string fichRutas);
-    void cargarAeropuertos(string fichVuelos);
+    void cargarAeropuertos(string fichAeropuertos);
     void cargarAerolineas(string fichAerolineas);
 public:
     //Constructor por defecto
@@ -72,7 +73,7 @@ public:
     vector<Vuelo*> buscaVuelos(string fnumber);
     vector<Vuelo*> vuelosOperadorPor(string icaoAerolinea, Fecha fecha);
 
-    list<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
+    set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
 
 
 };

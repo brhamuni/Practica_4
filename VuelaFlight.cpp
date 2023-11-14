@@ -5,8 +5,8 @@
 VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
     cargarAeropuertos("aeropuertos_v2.csv");
     cargarAerolineas("aerolineas_v1.csv");
-    cargarVuelos("infovuelos_v1.csv");
     cargarRutas("rutas_v1.csv");
+    cargarVuelos("infovuelos_v1.csv");
 }
 
 /**
@@ -216,6 +216,7 @@ long VuelaFlight::tamaWork() {
 }
 
 void VuelaFlight::cargarVuelos(std::string fichVuelos) {
+    int vuelos=0;
     std::ifstream is;
     std::stringstream columnas;
     std::string fila;
@@ -256,7 +257,8 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
                 int mesint= stoi(mes);
                 int diaint= stoi(dia);
                 Fecha fecha(diaint,mesint,anioint);
-                registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha);
+                if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha))
+                    vuelos++;
 
                 fila = "";
                 columnas.clear();
@@ -266,7 +268,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
         is.close();
         std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaVuelos) / (float) CLOCKS_PER_SEC)
                   << " segs." << std::endl;
-
+        cout<<"Hay un total de: "<<vuelos<<" vuelos"<<endl;
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
@@ -275,21 +277,22 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
 bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig, std::string &iataAeroDest,
                                  std::string &plane, std::string &datosMeteo, Fecha f) {
 
-    std::vector<Aeropuerto>::iterator orig=aeropuertos.begin();
-    Aeropuerto origen;
-    origen.setIata(iataAeroOrig);
-    orig= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
+    Aeropuerto* origen;
+    origen->setIata(iataAeroOrig);
+    std::vector<Aeropuerto>::iterator orig;
+    origen = launder(origen);
 
-    std::vector<Aeropuerto>::iterator dest=aeropuertos.begin();
     Aeropuerto destino;
     destino.setIata(iataAeroDest);
-    dest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
+    std::vector<Aeropuerto>::iterator dest;
+    *(&dest)= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
 
-    std::map<string,Aerolinea>::iterator aerolinea=airlines.find(fNumber.substr(0,3));
+    std::map<string,Aerolinea>::iterator aerolinea=airlines.lower_bound(fNumber.substr(0,3));
 
-    if (!(&aerolinea) || !(&dest) || !(&orig)){
+    if (&((*aerolinea).second) && &(*dest) && &(*orig)){
+        //cout<<"Se ha metido "<<endl;
         Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolinea->second));
-        aerolinea->second.addVuelo(&vuelo);
+        (*aerolinea).second.addVuelo(&vuelo);
         return true;
     }else
         return false;
@@ -312,15 +315,15 @@ vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha 
     iterador->second.getVuelos(fecha,fecha);
 }
 
-list<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
+set<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
     std::map<string,Aerolinea>::iterator iterador;
-    list<string> identificadores;
+    set<string> identificadores;
     for(iterador=airlines.begin();iterador!=airlines.end();iterador++){
         std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
         std::multimap<string,Vuelo*>::iterator iteradorvuelos;
         for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
             if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest && iteradorvuelos->second->getAirpOrigin()->getIsoPais()==paisOrig)
-                identificadores.push_back(iteradorvuelos->second->getFlightNumb());
+                identificadores.insert(iteradorvuelos->second->getFlightNumb());
         }
     }
 
@@ -387,6 +390,7 @@ void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {
 
         std::cout << "Tiempo lectura de los aeropuertos: " << ((clock() - lecturaAeropuertos) / (float) CLOCKS_PER_SEC)
                   << " segs." << std::endl;
+        std::sort(aeropuertos.begin(), aeropuertos.end());
 
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
@@ -450,7 +454,6 @@ void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
     std::string Name;
     std::string Country;
     std::string Active;
-    std::sort(aeropuertos.begin(), aeropuertos.end());
 
     is.open(fichAerolineas); //carpeta de proyecto
     if (is.good()) {
