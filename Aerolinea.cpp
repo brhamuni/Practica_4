@@ -184,15 +184,16 @@ Vuelo* Aerolinea::addVuelo( Vuelo &v) {
     if (!v.getAirpOrigin() || !v.getAirpDestin()|| !v.getLinkaero())
         return nullptr;
 
-    flights.insert(pair<string,Vuelo*>(v.getFlightNumb(),&v));
+    pair<string,Vuelo*> par(v.getFlightNumb(),&v);
+    flights.insert(*(&par));
 
     for (int i=0; i<aerorutas.size(); i++) {
 
-        if(aerorutas[i]->getOrigin()==v.getAirpOrigin() &&
-        aerorutas[i]->getCompany()==v.getLinkaero() &&
-        aerorutas[i]->getDestination()==v.getAirpDestin()){
-            aerorutas[i]->addVuelo(v);
-            return &v;
+        if(/*aerorutas[i]->getOrigin()==v.getAirpOrigin() &&*/
+        aerorutas[i]->getCompany()==v.getLinkaero()/* &&
+        aerorutas[i]->getDestination()==v.getAirpDestin()*/){
+            aerorutas[i]->addVuelo(*par.second);
+            return &(*par.second);
         }
 
     }
@@ -219,7 +220,7 @@ vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
     for (iterador=flights.begin();iterador!=flights.end() ; iterador++) {
         if ( iterador->second->getFecha()>fIni || iterador->second->getFecha().mismoDia(fIni)&&
         iterador->second->getFecha()<fFin || iterador->second->getFecha().mismoDia(fFin))
-            vuelosFecha.push_back(iterador->second);
+            vuelosFecha.push_back(&(*iterador->second));
     }
 
     return  vuelosFecha;

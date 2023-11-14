@@ -21,7 +21,7 @@ int main(int argc, const char * argv[]) {
     VuelaFlight vuelaFlight;
 
     Aerolinea ibe=vuelaFlight.buscaAerolinea("IBE");
-
+    Aerolinea aea=vuelaFlight.buscaAerolinea("AEA");
 
 
 

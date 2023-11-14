@@ -40,9 +40,9 @@ void Ruta::setFlightRou(list<Vuelo*>flightRou) {
 }
 
 bool Ruta::addVuelo(Vuelo &v) {
-    if(v.getLinkaero()==this->company&&
-    v.getAirpDestin()==this->destination&&
-    v.getAirpOrigin()==this->origin){
+    if(v.getLinkaero()->getIcao()==this->company->getIcao() &&
+    v.getAirpDestin()->getIata()==this->destination->getIata()&&
+    v.getAirpOrigin()->getIata()==this->origin->getIata()){
         flightRou.push_back(&v);
         return true;
     }

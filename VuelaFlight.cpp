@@ -290,8 +290,9 @@ bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig
 
     if (aerolineaEncontrada!=airlines.end() && dest!=aeropuertos.end() && orig!=aeropuertos.end()){
         //cout<<"Se ha metido "<<endl;
-        Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolineaEncontrada->second));
-        aerolineaEncontrada->second.addVuelo(vuelo);
+        Vuelo* vuelo= new Vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolineaEncontrada->second));
+        aerolineaEncontrada->second.addVuelo(*vuelo);
+
         return true;
     }else {
         return false;
