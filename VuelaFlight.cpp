@@ -257,7 +257,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
                 int mesint= stoi(mes);
                 int diaint= stoi(dia);
                 Fecha fecha(diaint,mesint,anioint);
-                if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha))
+                if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha)==true)
                     vuelos++;
 
                 fila = "";
@@ -277,25 +277,25 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
 bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig, std::string &iataAeroDest,
                                  std::string &plane, std::string &datosMeteo, Fecha f) {
 
-    Aeropuerto* origen;
-    origen->setIata(iataAeroOrig);
-    std::vector<Aeropuerto>::iterator orig;
-    origen = launder(origen);
+    std::map<string,Aerolinea>::iterator aerolineaEncontrada = airlines.find(fNumber.substr(0,3));
 
+    std::vector<Aeropuerto>::iterator orig;
+    Aeropuerto origen;
+    origen.setIata(iataAeroOrig);
+    orig= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
+    std::vector<Aeropuerto>::iterator dest;
     Aeropuerto destino;
     destino.setIata(iataAeroDest);
-    std::vector<Aeropuerto>::iterator dest;
-    *(&dest)= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
+    dest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
 
-    std::map<string,Aerolinea>::iterator aerolinea=airlines.lower_bound(fNumber.substr(0,3));
-
-    if (&((*aerolinea).second) && &(*dest) && &(*orig)){
+    if (aerolineaEncontrada!=airlines.end() && dest!=aeropuertos.end() && orig!=aeropuertos.end()){
         //cout<<"Se ha metido "<<endl;
-        Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolinea->second));
-        (*aerolinea).second.addVuelo(&vuelo);
+        Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolineaEncontrada->second));
+        aerolineaEncontrada->second.addVuelo(vuelo);
         return true;
-    }else
+    }else {
         return false;
+    }
 }
 
 vector<Vuelo*> VuelaFlight::buscaVuelos(std::string fnumber) {

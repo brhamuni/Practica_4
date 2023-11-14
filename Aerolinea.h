@@ -69,7 +69,7 @@ public:
     //Setter Aerorutas
     void setAerorutas(const std::deque<Ruta *> &aerorutas);
 
-    Vuelo* addVuelo( Vuelo* v);
+    Vuelo* addVuelo(Vuelo& v);
 
     vector<Vuelo*> getVuelos(std::string fNumber);
     vector<Vuelo*> getVuelos( Fecha fIni,  Fecha fFin);

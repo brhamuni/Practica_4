@@ -19,7 +19,13 @@
 
 int main(int argc, const char * argv[]) {
     VuelaFlight vuelaFlight;
-    cout<<"Hay un total de: "
+
+    Aerolinea ibe=vuelaFlight.buscaAerolinea("IBE");
+
+
+
+
+    /*cout<<"Hay un total de: "
     <<vuelaFlight.aeropuertos.size()<<" aeropuertos, "
     <<vuelaFlight.airlines.size()<<" aerolineas, "
     <<vuelaFlight.rutas.size()<<" rutas,"<<std::endl;
@@ -28,22 +34,24 @@ int main(int argc, const char * argv[]) {
     string aerolinea1="AEA5201";
     map<string,Aerolinea>::iterator aerolineaAEA=vuelaFlight.airlines.find(aerolinea1.substr(0,3));
     vector<Vuelo*> vueloAEA =(*aerolineaAEA).second.getVuelos("AEA5201");
-    if(&vueloAEA[0]== nullptr){
-        cout<<"El vuelo es realizado con la aerolinea: "<<aerolineaAEA->second.getNombre()<<", con pais: "<<
-            aerolineaAEA->second.getPais()<<", aeropuerto de origen: "<<vueloAEA[0]->getAirpOrigin()->getIata()<<
-            ", aeropuerto de destino: "<<vueloAEA[0]->getAirpDestin()->getIata();
+    if(vueloAEA.size() != 0){
+        cout<<"El vuelo es realizado con la aerolinea: "<<aerolineaAEA->second.getNombre();
+        cout<<", con pais: "<<aerolineaAEA->second.getPais();
+        //cout<<", aeropuerto de origen: "<<vueloAEA[1]->getAirpOrigin()->getIata();
+        //cout<<", aeropuerto de destino: "<<vueloAEA[1]->getAirpDestin()->getIata();
     }else
         cout<<"El vuelo AEA5201 no existe"<<endl;
 
     aerolinea1="VLG2021";
     map<string,Aerolinea>::iterator aerolineaVLG=vuelaFlight.airlines.find(aerolinea1.substr(0,3));
-    vector<Vuelo*> vueloVLG =(*aerolineaVLG).second.getVuelos("AEA5201");
+    vector<Vuelo*> vueloVLG =(*aerolineaVLG).second.getVuelos("VLG2021");
     if(&vueloVLG[0]== nullptr){
-        cout<<"El vuelo es realizado con la aerolinea: "<<aerolineaVLG->second.getNombre()<<", con pais: "<<
-            aerolineaVLG->second.getPais()<<", aeropuerto de origen: "<<vueloVLG[0]->getAirpOrigin()->getIata()<<
-            ", aeropuerto de destino: "<<vueloVLG[0]->getAirpDestin()->getIata();
+        cout<<"El vuelo es realizado con la aerolinea: "<<aerolineaVLG->second.getNombre();
+        cout<<", con pais: "<<aerolineaVLG->second.getPais();
+        cout<<", aeropuerto de origen: "<<vueloVLG[1]->getAirpOrigin()->getIata();
+        cout<<", aeropuerto de destino: "<<vueloVLG[1]->getAirpDestin()->getIata();
     }else
-        cout<<"El vuelo VLG2021 no existe"<<endl;
+        cout<<"El vuelo VLG2021 no existe"<<endl;*/
 
 
 
