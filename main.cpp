@@ -68,11 +68,11 @@ int main(int argc, const char * argv[]) {
     }else
         cout<<"El vuelo VLG2021 no existe"<<endl;
 
-    Fecha fechaVLG(13,4,2018);
-    vueloVLG=(*aerolineaAEA).second.getVuelos(Fecha(12,4,2018),Fecha(14,4,2018));
+    Fecha fechaVLG(13,4,18);
+    vector<Vuelo*>vueloVLG2=(*aerolineaAEA).second.getVuelos(fechaVLG,fechaVLG);
     cout<<"Los aviones usados por la aerolinea Vueling el 13/4/2018 son: "<<endl;
-    for (int i = 0; i <vueloVLG.size(); ++i) {
-        cout<<"Modelo :"<<i+1<< vueloVLG[i]->getPlane()<<endl;
+    for (int i = 0; i <vueloVLG2.size(); ++i) {
+        cout<<"Modelo :"<<i+1<< vueloVLG2[i]->getPlane()<<endl;
     }
 
 

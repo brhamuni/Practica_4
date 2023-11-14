@@ -215,7 +215,7 @@ vector<Vuelo*> Aerolinea::getVuelos(std::string fNumber) {
 }
 
 vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
-    /*vector<Vuelo*> vuelosFecha;
+    vector<Vuelo*> vuelosFecha;
     multimap<string,Vuelo*>::iterator iterador;
     for (iterador=flights.begin();iterador!=flights.end() ; iterador++) {
 
@@ -226,18 +226,7 @@ vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
         }
     }
 
-    return  vuelosFecha;*/
-    vector<Vuelo *> v;
-    std::multimap<std::string, Vuelo*>::iterator it = flights.begin();
-    while (it != flights.end()) {
-        if (!(it->second->getFecha() < fIni) &&
-            (it->second->getFecha() < fFin || it->second->getFecha().mismoDia(fFin))) {
-            v.push_back(*(&it->second));
-            cout<<"Fecha correcta"<<endl;
-        }
-        it++;
-    }
-    return v;
+    return  vuelosFecha;
 }
 
 const multimap<string, Vuelo *> &Aerolinea::getFlights() const {
