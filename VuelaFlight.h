@@ -23,6 +23,9 @@ private:
     std::vector<Aeropuerto> aeropuertos;
     std::list<Ruta> rutas;
     std::map<string,Aerolinea> airlines;
+
+    long int tamavuelos=0;
+
     //Metodos privados para cargar cada uno de los csv
     void cargarVuelos(string fichVuelos);
     void cargarRutas(string fichRutas);
@@ -87,6 +90,10 @@ public:
     map<string, Aerolinea> &getAirlines();
 
     void setAirlines(const map<string, Aerolinea> &airlines);
+
+    long getTamavuelos() const;
+
+    void setTamavuelos(long tamavuelos);
 };
 
 

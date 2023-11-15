@@ -29,13 +29,9 @@ Aeropuerto& Aeropuerto::operator=(const Aeropuerto &orig){
     return *this;
 }
 
-
-
-
 Aeropuerto::Aeropuerto(const Aeropuerto& orig) : id(orig.id), iata(orig.iata), tipo(orig.tipo), nombre(orig.nombre), continente(orig.continente),
                                                  iso_pais(orig.iso_pais){
 }
-
 
 const std::string &Aeropuerto::getId() const {
     return id;

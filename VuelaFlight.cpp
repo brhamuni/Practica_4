@@ -216,7 +216,6 @@ long VuelaFlight::tamaWork() {
 }
 
 void VuelaFlight::cargarVuelos(std::string fichVuelos) {
-    int vuelos=0;
     std::ifstream is;
     std::stringstream columnas;
     std::string fila;
@@ -258,7 +257,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
                 int diaint= stoi(dia);
                 Fecha fecha(diaint,mesint,anioint);
                 if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha))
-                    vuelos++;
+                    tamavuelos++;
 
                 fila = "";
                 columnas.clear();
@@ -268,7 +267,6 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
         is.close();
         std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaVuelos) / (float) CLOCKS_PER_SEC)
                   << " segs." << std::endl;
-        cout<<"Hay un total de: "<<vuelos<<" vuelos."<<endl;
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
@@ -302,6 +300,7 @@ vector<Vuelo*> VuelaFlight::buscaVuelos(std::string fnumber) {
     vector<Vuelo*> vuelos;
     for (iterador; iterador!=airlines.end() ; iterador++) {
         vector<Vuelo*>aux =iterador->second.getVuelos(fnumber);
+        //Concatenamos el vector
         vuelos.insert(vuelos.end(),aux.begin(),aux.end());
     }
 
@@ -536,4 +535,12 @@ map<string, Aerolinea> &VuelaFlight::getAirlines(){
 
 void VuelaFlight::setAirlines(const map<string, Aerolinea> &airlines) {
     VuelaFlight::airlines = airlines;
+}
+
+long VuelaFlight::getTamavuelos() const {
+    return tamavuelos;
+}
+
+void VuelaFlight::setTamavuelos(long tamavuelos) {
+    VuelaFlight::tamavuelos = tamavuelos;
 }
