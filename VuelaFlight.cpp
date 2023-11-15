@@ -320,11 +320,13 @@ set<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string 
     std::map<string,Aerolinea>::iterator iterador;
     set<string> identificadores;
     for(iterador=airlines.begin();iterador!=airlines.end();iterador++){
-        std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
-        std::multimap<string,Vuelo*>::iterator iteradorvuelos;
-        for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
-            if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest && iteradorvuelos->second->getAirpOrigin()->getIsoPais()==paisOrig)
-                identificadores.insert(iteradorvuelos->second->getFlightNumb());
+        if (iterador->second.getPais()==paisOrig){
+            std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
+            std::multimap<string,Vuelo*>::iterator iteradorvuelos;
+            for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
+                if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest)
+                    identificadores.insert(iteradorvuelos->second->getFlightNumb());
+            }
         }
     }
 

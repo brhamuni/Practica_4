@@ -221,7 +221,6 @@ vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
 
         if (iterador->second->getFecha() > fIni || iterador->second->getFecha().mismoDia(fIni)&&
         iterador->second->getFecha() < fFin ||iterador->second->getFecha().mismoDia(fFin)) {
-            cout << "Fecha de correcta" << endl;
             vuelosFecha.push_back(*(&iterador->second));
         }
     }
