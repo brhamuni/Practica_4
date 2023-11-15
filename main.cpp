@@ -70,7 +70,7 @@ int main(int argc, const char * argv[]) {
 
 #pragma region Ejercicio 3 (VLG, el 13/4/2018)
     Fecha fechaVLG(13,4,18);
-    vector<Vuelo*>vueloVLG2=(*aerolineaAEA).second.getVuelos(fechaVLG,fechaVLG);
+    vector<Vuelo*>vueloVLG2=vuelaFlight.vuelosOperadorPor("VLG",fechaVLG);
     //Uso un mapa para quitar los repetidos
     std::map<string ,Vuelo*>vueloVLG2SinRepetidos;
     for (int i = 0; i <vueloVLG2.size(); ++i) {
@@ -85,12 +85,12 @@ int main(int argc, const char * argv[]) {
 
 #pragma endregion
 
-#pragma region Ejercicio 4
+#pragma region Ejercicio 4 Vuelos de Spain a London
 
-    set<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("Spain","LHR");
-    set<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("Spain","STN");
-    set<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("Spain","LTN");
-    set<string> vuelosLGW=vuelaFlight.buscaVuelosDestAerop("Spain","LGW");
+    set<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("ES","LHR");
+    set<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("ES","STN");
+    set<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("ES","LTN");
+    set<string> vuelosLGW=vuelaFlight.buscaVuelosDestAerop("ES","LGW");
 
     set<string> vuelosLondon;
     //Concatenamos los vuelos para dejarlos todos en vuelosLondon
@@ -104,8 +104,22 @@ int main(int argc, const char * argv[]) {
     for(vuelosLondonIT=vuelosLondon.begin();vuelosLondonIT!=vuelosLondon.end();vuelosLondonIT++){
         cout<<"Vuelo: "<<*vuelosLondonIT<<endl;
     }
+    cout<<"El total de vuelos de Spain a London son: "<< vuelosLondon.size() <<" vuelos."<<endl;
+
 #pragma endregion
 
+#pragma region Ejercicio Parejas
+
+    set<Aeropuerto*> aeropuertosEVE=vuelaFlight.buscaAeropuertosAerolinea("EVE");
+    set<Aeropuerto*>::iterator aeropuertosEVEIT;
+
+    cout<<endl<<"--------------Todos los aeropuertos de la aerolinea EVE: --------------"<<endl;
+    for(aeropuertosEVEIT=aeropuertosEVE.begin();aeropuertosEVEIT!=aeropuertosEVE.end();aeropuertosEVEIT++){
+        cout<<"Vuelo: "<<(*aeropuertosEVEIT)->getNombre()<<endl;
+    }
+    cout<<"El total de vuelos de Spain a London son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
+
+#pragma endregion
 
 
     return 0;

@@ -74,7 +74,7 @@ public:
     vector<Vuelo*> vuelosOperadorPor(string icaoAerolinea, Fecha fecha);
 
     set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
-
+    set<Aeropuerto*>buscaAeropuertosAerolinea(string icaoAerolinea);
 
 };
 

@@ -228,7 +228,7 @@ vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
     return  vuelosFecha;
 }
 
-const multimap<string, Vuelo *> &Aerolinea::getFlights() const {
+multimap<string, Vuelo *> &Aerolinea::getFlights()  {
     return flights;
 }
 

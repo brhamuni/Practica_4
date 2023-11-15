@@ -313,24 +313,38 @@ vector<Vuelo*> VuelaFlight::buscaVuelos(std::string fnumber) {
 vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha fecha) {
     map<string,Aerolinea>::iterator iterador;
     iterador=airlines.find(icaoAerolinea);
-    iterador->second.getVuelos(fecha,fecha);
+    return iterador->second.getVuelos(fecha,fecha);
+
 }
 
 set<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
     std::map<string,Aerolinea>::iterator iterador;
     set<string> identificadores;
     for(iterador=airlines.begin();iterador!=airlines.end();iterador++){
-        if (iterador->second.getPais()==paisOrig){
-            std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
-            std::multimap<string,Vuelo*>::iterator iteradorvuelos;
-            for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
-                if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest)
-                    identificadores.insert(iteradorvuelos->second->getFlightNumb());
-            }
+        std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
+        std::multimap<string,Vuelo*>::iterator iteradorvuelos;
+        for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
+            if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest &&
+            iteradorvuelos->second->getAirpOrigin()->getIsoPais()==paisOrig)
+                identificadores.insert(iteradorvuelos->second->getFlightNumb());
         }
+
     }
 
     return identificadores;
+}
+
+set<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(std::string icaoAerolinea) {
+    map<string,Aerolinea>::iterator aerolinea=airlines.find(icaoAerolinea);
+    set<Aeropuerto*> setAeros;
+    multimap<string,Vuelo*>::iterator vuelosIT=aerolinea->second.getFlights().begin();
+
+    for(vuelosIT;vuelosIT!=aerolinea->second.getFlights().end();vuelosIT++){
+        setAeros.insert(vuelosIT->second->getAirpOrigin());
+        setAeros.insert(vuelosIT->second->getAirpDestin());
+    }
+
+    return setAeros;
 }
 
 void VuelaFlight::cargarAeropuertos(std::string fichAeropuertos) {

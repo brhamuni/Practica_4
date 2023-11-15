@@ -21,7 +21,7 @@ private:
     std::deque<Ruta*> aerorutas;
     std::multimap<string,Vuelo*> flights;
 public:
-    const multimap<string, Vuelo *> &getFlights() const;
+    multimap<string, Vuelo *> &getFlights() ;
 
     void setFlights(const multimap<string, Vuelo *> &flights);
 
