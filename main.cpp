@@ -36,7 +36,7 @@ int main(int argc, const char * argv[]) {
         cout<<", con pais: "<<aerolineaAEA->second.getPais();
         cout<<", origen: "<<vueloAEA[1]->getAirpOrigin()->getIata();
         cout<<", destino: "<<vueloAEA[1]->getAirpDestin()->getIata()<<endl;
-        cout<<endl<<"--------------VUELOS CON AEA: --------------"<<endl;
+        cout<<"--------------VUELOS CON AEA: --------------"<<endl;
         for (int i = 0; i < vueloAEA.size(); ++i) {
             if(vueloAEA[i]->getDatoMeteo().substr(0,6)=="Lluvia" || vueloAEA[i]->getDatoMeteo().substr(0,9)=="Chubascos" ){
                 cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloAEA[i]->getFecha()<<", Condiciones: "<<vueloAEA[i]->getDatoMeteo()<<endl;
@@ -55,7 +55,7 @@ int main(int argc, const char * argv[]) {
         cout<<", con pais: "<<aerolineaVLG->second.getPais();
         cout<<", origen: "<<vueloVLG[1]->getAirpOrigin()->getIata();
         cout<<", destino: "<<vueloVLG[1]->getAirpDestin()->getIata()<<endl;
-        cout<<endl<<"--------------VUELOS CON VLG: --------------"<<endl;
+        cout<<"--------------VUELOS CON VLG: --------------"<<endl;
         for (int i = 0; i < vueloVLG.size(); ++i) {
             if(vueloVLG[i]->getDatoMeteo().substr(0,6)=="Lluvia" || vueloVLG[i]->getDatoMeteo().substr(0,9)=="Chubascos" ){
                 cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloVLG[i]->getFecha()<<", Condiciones: "<<vueloVLG[i]->getDatoMeteo()<<endl;
@@ -82,6 +82,7 @@ int main(int argc, const char * argv[]) {
     for (iterador=vueloVLG2SinRepetidos.begin(); iterador!=vueloVLG2SinRepetidos.end(); iterador++) {
         cout<<"Modelo: "<< iterador->second->getPlane()<<endl;
     }
+    cout<<"Total de aviones usados por vueling: "<<vueloVLG2SinRepetidos.size()<<endl;
 
 #pragma endregion
 
@@ -117,7 +118,7 @@ int main(int argc, const char * argv[]) {
     for(aeropuertosEVEIT=aeropuertosEVE.begin();aeropuertosEVEIT!=aeropuertosEVE.end();aeropuertosEVEIT++){
         cout<<"Vuelo: "<<(*aeropuertosEVEIT)->getNombre()<<endl;
     }
-    cout<<"En total los aeropuertos que intervienen la aerolinea EVE son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
+    cout<<"El total los aeropuertos que son intervenidos por la aerolinea EVE son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
 
 #pragma endregion
 

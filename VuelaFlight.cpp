@@ -268,7 +268,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
         is.close();
         std::cout << "Tiempo lectura de los vuelos: " << ((clock() - lecturaVuelos) / (float) CLOCKS_PER_SEC)
                   << " segs." << std::endl;
-        cout<<"Hay un total de: "<<vuelos<<" vuelos"<<endl;
+        cout<<"Hay un total de: "<<vuelos<<" vuelos."<<endl;
     } else {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
@@ -289,10 +289,8 @@ bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig
     dest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
 
     if (aerolineaEncontrada!=airlines.end() && dest!=aeropuertos.end() && orig!=aeropuertos.end()){
-        //cout<<"Se ha metido "<<endl;
         Vuelo* vuelo= new Vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolineaEncontrada->second));
         aerolineaEncontrada->second.addVuelo(*vuelo);
-
         return true;
     }else {
         return false;

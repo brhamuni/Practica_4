@@ -38,11 +38,11 @@ list<Vuelo *> Ruta::getFlightRou() const {
 void Ruta::setFlightRou(list<Vuelo*>flightRou) {
     Ruta::flightRou = flightRou;
 }
-/*&&
-    v.getAirpDestin()->getIata()==this->destination->getIata()&&
-    v.getAirpOrigin()->getIata()==this->origin->getIata()*/
+
 bool Ruta::addVuelo(Vuelo &v) {
-    if(v.getLinkaero()->getIcao()==this->company->getIcao() ){
+    if(v.getLinkaero()->getIcao()==this->company->getIcao()&&
+       v.getAirpDestin()->getIata()==this->destination->getIata()&&
+       v.getAirpOrigin()->getIata()==this->origin->getIata()){
         flightRou.push_back(&v);
         return true;
     }

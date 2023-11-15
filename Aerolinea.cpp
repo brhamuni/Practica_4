@@ -179,24 +179,22 @@ void Aerolinea::setAerorutas(const std::deque<Ruta *> &aerorutas) {
     Aerolinea::aerorutas = aerorutas;
 }
 
-
 Vuelo* Aerolinea::addVuelo( Vuelo &v) {
     if (!v.getAirpOrigin() || !v.getAirpDestin()|| !v.getLinkaero())
         return nullptr;
 
     pair<string,Vuelo*> par(v.getFlightNumb(),&v);
-    flights.insert(*(&par));
+    flights.insert(par);
 
     for (int i=0; i<aerorutas.size(); i++) {
-
-        if(/*aerorutas[i]->getOrigin()==v.getAirpOrigin() &&*/
-        aerorutas[i]->getCompany()->getIcao()==v.getLinkaero()->getIcao()/* &&
-        aerorutas[i]->getDestination()==v.getAirpDestin()*/){
+        if(aerorutas[i]->getOrigin()->getIata()==v.getAirpOrigin()->getIata() &&
+        aerorutas[i]->getCompany()->getIcao()==v.getLinkaero()->getIcao() &&
+        aerorutas[i]->getDestination()->getIata()==v.getAirpDestin()->getIata()){
             aerorutas[i]->addVuelo(*par.second);
             return &(*par.second);
         }
-
     }
+
     return nullptr;
 }
 
