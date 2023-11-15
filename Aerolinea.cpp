@@ -167,7 +167,7 @@ void Aerolinea::setActivo(bool activo) {
  * @brief Getter Con Acceso al private aerorutas
  * @return
  */
-const std::deque<Ruta *> &Aerolinea::getAerorutas() const {
+std::deque<Ruta *> &Aerolinea::getAerorutas()  {
     return aerorutas;
 }
 /**

@@ -65,7 +65,7 @@ public:
     //Setter Activo
     void setActivo(bool activo);
     //Getter de variable privada aeroruta
-    const std::deque<Ruta *> &getAerorutas() const;
+    std::deque<Ruta *> &getAerorutas() ;
     //Setter Aerorutas
     void setAerorutas(const std::deque<Ruta *> &aerorutas);
 

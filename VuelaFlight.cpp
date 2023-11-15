@@ -257,7 +257,7 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
                 int mesint= stoi(mes);
                 int diaint= stoi(dia);
                 Fecha fecha(diaint,mesint,anioint);
-                if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha)==true)
+                if(registrarVuelo(flightNumber,dep_airport_code,arr_airport_code,plane,dep_weather_desc,fecha))
                     vuelos++;
 
                 fila = "";
@@ -277,20 +277,20 @@ void VuelaFlight::cargarVuelos(std::string fichVuelos) {
 bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig, std::string &iataAeroDest,
                                  std::string &plane, std::string &datosMeteo, Fecha f) {
 
-    std::map<string,Aerolinea>::iterator aerolineaEncontrada = airlines.find(fNumber.substr(0,3));
+    std::map<string,Aerolinea>::iterator itAerolinea = airlines.find(fNumber.substr(0,3));
 
-    std::vector<Aeropuerto>::iterator orig;
+    std::vector<Aeropuerto>::iterator itOrig;
     Aeropuerto origen;
     origen.setIata(iataAeroOrig);
-    orig= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
-    std::vector<Aeropuerto>::iterator dest;
+    itOrig= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),origen);
+    std::vector<Aeropuerto>::iterator itDest;
     Aeropuerto destino;
     destino.setIata(iataAeroDest);
-    dest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
+    itDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
 
-    if (aerolineaEncontrada!=airlines.end() && dest!=aeropuertos.end() && orig!=aeropuertos.end()){
-        Vuelo* vuelo= new Vuelo(fNumber, plane, datosMeteo, f, &(*orig), &(*dest), &(aerolineaEncontrada->second));
-        aerolineaEncontrada->second.addVuelo(*vuelo);
+    if (itAerolinea!=airlines.end() && itDest!=aeropuertos.end() && itOrig!=aeropuertos.end()){
+        Vuelo* vuelo= new Vuelo(fNumber, plane, datosMeteo, f, &(*itOrig), &(*itDest), &(itAerolinea->second));
+        itAerolinea->second.addVuelo(*vuelo);
         return true;
     }else {
         return false;
