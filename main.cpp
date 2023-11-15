@@ -87,16 +87,17 @@ int main(int argc, const char * argv[]) {
 
 #pragma region Ejercicio 4
 
-    set<string> veulosLHR=vuelaFlight.buscaVuelosDestAerop("Spain","LHR");
-    set<string> veulosSTN=vuelaFlight.buscaVuelosDestAerop("Spain","STN");
-    set<string> veulosLTN=vuelaFlight.buscaVuelosDestAerop("Spain","LTN");
-    set<string> veulosLGW=vuelaFlight.buscaVuelosDestAerop("Spain","LGW");
+    set<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("Spain","LHR");
+    set<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("Spain","STN");
+    set<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("Spain","LTN");
+    set<string> vuelosLGW=vuelaFlight.buscaVuelosDestAerop("Spain","LGW");
 
     set<string> vuelosLondon;
-    vuelosLondon.insert(veulosLHR.begin(), veulosLHR.end());
-    vuelosLondon.insert(veulosSTN.begin(), veulosSTN.end());
-    vuelosLondon.insert(veulosLTN.begin(), veulosLTN.end());
-    vuelosLondon.insert(veulosLGW.begin(), veulosLGW.end());
+    //Concatenamos los vuelos para dejarlos todos en vuelosLondon
+    vuelosLondon.insert(vuelosLHR.begin(), vuelosLHR.end());
+    vuelosLondon.insert(vuelosSTN.begin(), vuelosSTN.end());
+    vuelosLondon.insert(vuelosLTN.begin(), vuelosLTN.end());
+    vuelosLondon.insert(vuelosLGW.begin(), vuelosLGW.end());
 
     cout<<endl<<"--------------Todos los vuelos a Londres que salen desde Spain: --------------"<<endl;
     set<string>::iterator vuelosLondonIT;
