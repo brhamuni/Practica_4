@@ -20,29 +20,15 @@
 
 class VuelaFlight {
 private:
-    //Declaramos los metodo publicos y constructores
     std::vector<Aeropuerto> aeropuertos;
-public:
-    vector<Aeropuerto> &getAeropuertos();
-
-    void setAeropuertos(const vector<Aeropuerto> &aeropuertos);
-
-    list<Ruta> &getRutas();
-
-    void setRutas(const list<Ruta> &rutas);
-
-    map<string, Aerolinea> &getAirlines();
-
-    void setAirlines(const map<string, Aerolinea> &airlines);
-
-private:
     std::list<Ruta> rutas;
     std::map<string,Aerolinea> airlines;
-
+    //Metodos privados para cargar cada uno de los csv
     void cargarVuelos(string fichVuelos);
     void cargarRutas(string fichRutas);
     void cargarAeropuertos(string fichAeropuertos);
     void cargarAerolineas(string fichAerolineas);
+
 public:
     //Constructor por defecto
     VuelaFlight();
@@ -90,6 +76,17 @@ public:
     set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
     set<Aeropuerto*>buscaAeropuertosAerolinea(string icaoAerolinea);
 
+    vector<Aeropuerto> &getAeropuertos();
+
+    void setAeropuertos(const vector<Aeropuerto> &aeropuertos);
+
+    list<Ruta> &getRutas();
+
+    void setRutas(const list<Ruta> &rutas);
+
+    map<string, Aerolinea> &getAirlines();
+
+    void setAirlines(const map<string, Aerolinea> &airlines);
 };
 
 
