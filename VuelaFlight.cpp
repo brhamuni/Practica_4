@@ -513,3 +513,27 @@ void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
 }
+
+vector<Aeropuerto> &VuelaFlight::getAeropuertos() {
+    return aeropuertos;
+}
+
+void VuelaFlight::setAeropuertos(const vector<Aeropuerto> &aeropuertos) {
+    VuelaFlight::aeropuertos = aeropuertos;
+}
+
+list<Ruta> &VuelaFlight::getRutas() {
+    return rutas;
+}
+
+void VuelaFlight::setRutas(const list<Ruta> &rutas) {
+    VuelaFlight::rutas = rutas;
+}
+
+map<string, Aerolinea> &VuelaFlight::getAirlines(){
+    return airlines;
+}
+
+void VuelaFlight::setAirlines(const map<string, Aerolinea> &airlines) {
+    VuelaFlight::airlines = airlines;
+}

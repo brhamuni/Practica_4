@@ -21,14 +21,14 @@ int main(int argc, const char * argv[]) {
     VuelaFlight vuelaFlight;
 
     cout<<"Hay un total de: "
-    <<vuelaFlight.aeropuertos.size()<<" aeropuertos, "
-    <<vuelaFlight.airlines.size()<<" aerolineas, "
-    <<vuelaFlight.rutas.size()<<" rutas."<<std::endl;
+    <<vuelaFlight.getAeropuertos().size()<<" aeropuertos, "
+    <<vuelaFlight.getAirlines().size()<<" aerolineas, "
+    <<vuelaFlight.getRutas().size()<<" rutas."<<std::endl;
 
 #pragma region Ejercicio 2 (AEA5201 VLG2021)
 
     string aerolinea1="AEA5201";
-    map<string,Aerolinea>::iterator aerolineaAEA=vuelaFlight.airlines.find(aerolinea1.substr(0,3));
+    map<string,Aerolinea>::iterator aerolineaAEA=vuelaFlight.getAirlines().find(aerolinea1.substr(0,3));
     vector<Vuelo*> vueloAEA =(*aerolineaAEA).second.getVuelos("AEA5201");
 
     if(vueloAEA.size() != 0){
@@ -47,7 +47,7 @@ int main(int argc, const char * argv[]) {
         cout<<"El vuelo AEA5201 no existe"<<endl;
 
     aerolinea1="VLG2021";
-    map<string,Aerolinea>::iterator aerolineaVLG=vuelaFlight.airlines.find(aerolinea1.substr(0,3));
+    map<string,Aerolinea>::iterator aerolineaVLG=vuelaFlight.getAirlines().find(aerolinea1.substr(0,3));
     vector<Vuelo*> vueloVLG =(*aerolineaVLG).second.getVuelos("VLG2021");
 
     if(vueloVLG.size()!=0){
