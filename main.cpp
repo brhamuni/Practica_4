@@ -6,7 +6,6 @@
 #include "Aeropuerto.h"
 #include "Aerolinea.h"
 #include "VuelaFlight.h"
-#include <locale.h>
 
 
 /**
@@ -20,7 +19,6 @@
  */
 
 int main(int argc, const char * argv[]) {
-    setlocale(LC_ALL, "spanish");
     VuelaFlight vuelaFlight;
 
     cout<<"Hay un total de: "
