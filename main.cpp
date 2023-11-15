@@ -117,7 +117,7 @@ int main(int argc, const char * argv[]) {
     for(aeropuertosEVEIT=aeropuertosEVE.begin();aeropuertosEVEIT!=aeropuertosEVE.end();aeropuertosEVEIT++){
         cout<<"Vuelo: "<<(*aeropuertosEVEIT)->getNombre()<<endl;
     }
-    cout<<"El total de vuelos de Spain a London son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
+    cout<<"En total los aeropuertos que intervienen la aerolinea EVE son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
 
 #pragma endregion
 
