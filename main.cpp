@@ -26,8 +26,8 @@ int main(int argc, const char * argv[]) {
     <<vuelaFlight.getNumAerolineas()<<" aerolineas, "
     <<vuelaFlight.getNumRutas()<<" rutas, "
     <<vuelaFlight.getTamavuelos()<<" vuelos."<<endl;
-#pragma region Ejercicio 2 (AEA5201 VLG2021)
 
+#pragma region Ejercicio 2 (AEA5201 VLG2021)
     vector<Vuelo*> vueloAEA =vuelaFlight.buscaVuelos("AEA5201");
     //Si el vector tiene algun elemento significa que tiene vuelos
     if(vueloAEA.size() != 0){
@@ -85,10 +85,7 @@ int main(int argc, const char * argv[]) {
 
 #pragma region Ejercicio 4 Vuelos de Spain a London
     list<Ruta>::iterator rutasIT;
-/*list<Ruta> lista=vuelaFlight.getRutas();
-    for(rutasIT=lista.begin();rutasIT!=lista.end();rutasIT++){
-        cout<<"La ruta: "<<rutasIT->getNumVuelos()<<" vuelos"<<endl;
-    }*/
+
     set<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("ES","LHR");
     set<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("ES","STN");
     set<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("ES","LTN");
