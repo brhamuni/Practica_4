@@ -21,11 +21,6 @@
 int main(int argc, const char * argv[]) {
     VuelaFlight vuelaFlight;
 
-    cout<<"Hay un total de: "
-    <<vuelaFlight.getNumAeropuertos()<<" aeropuertos, "
-    <<vuelaFlight.getNumAerolineas()<<" aerolineas, "
-    <<vuelaFlight.getNumRutas()<<" rutas, "
-    <<vuelaFlight.getTamavuelos()<<" vuelos."<<endl;
 
 #pragma region Ejercicio 2 (AEA5201 VLG2021)
     vector<Vuelo*> vueloAEA =vuelaFlight.buscaVuelos("AEA5201");
@@ -38,7 +33,7 @@ int main(int argc, const char * argv[]) {
         cout<<"--------------VUELOS CON AEA: --------------"<<endl;
         for (int i = 0; i < vueloAEA.size(); ++i) {
             if(vueloAEA[i]->getDatoMeteo().substr(0,6)=="Lluvia" || vueloAEA[i]->getDatoMeteo().substr(0,9)=="Chubascos" ){
-                cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloAEA[i]->getFecha()<<", Condiciones: "<<vueloAEA[i]->getDatoMeteo()<<endl;
+                cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloAEA[i]->getFecha().cadena().substr(0,7)<<", Condiciones: "<<vueloAEA[i]->getDatoMeteo()<<endl;
             }
         }
         cout<<"Hay un total de: "<<vueloAEA.size()<<" vuelos"<<endl<<endl;
@@ -55,7 +50,7 @@ int main(int argc, const char * argv[]) {
         cout<<"--------------VUELOS CON VLG: --------------"<<endl;
         for (int i = 0; i < vueloVLG.size(); ++i) {
             if(vueloVLG[i]->getDatoMeteo().substr(0,6)=="Lluvia" || vueloVLG[i]->getDatoMeteo().substr(0,9)=="Chubascos" ){
-                cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloVLG[i]->getFecha()<<", Condiciones: "<<vueloVLG[i]->getDatoMeteo()<<endl;
+                cout<<"Vuelo: "<<i+1<<", Dia: "<<vueloVLG[i]->getFecha().cadena().substr(0,7)<<", Condiciones: "<<vueloVLG[i]->getDatoMeteo()<<endl;
             }
         }
         cout<<"Hay un total de: "<<vueloAEA.size()<<" vuelos"<<endl;
@@ -76,8 +71,10 @@ int main(int argc, const char * argv[]) {
     }
     std::map<string ,Vuelo*>::iterator iterador;
     cout<<endl<<"--------------Los aviones usados por la aerolinea Vueling el 13/4/2018 son: --------------"<<endl;
+    int i=1;
     for (iterador=vueloVLG2SinRepetidos.begin(); iterador!=vueloVLG2SinRepetidos.end(); iterador++) {
-        cout<<"Modelo: "<< iterador->second->getPlane()<<endl;
+        cout<<"Modelo "<<i<<": "<< iterador->second->getPlane()<<endl;
+        i++;
     }
     cout<<"Total de aviones usados por vueling: "<<vueloVLG2SinRepetidos.size()<<endl;
 
@@ -100,8 +97,10 @@ int main(int argc, const char * argv[]) {
 
     cout<<endl<<"--------------Todos los vuelos a Londres que salen desde Spain: --------------"<<endl;
     set<string>::iterator vuelosLondonIT;
+    i=1;
     for(vuelosLondonIT=vuelosLondon.begin();vuelosLondonIT!=vuelosLondon.end();vuelosLondonIT++){
-        cout<<"Vuelo: "<<*vuelosLondonIT<<endl;
+        cout<<"Vuelo "<<i<<":  "<<*vuelosLondonIT<<endl;
+        i++;
     }
     cout<<"El total de vuelos de Spain a London son: "<< vuelosLondon.size() <<" vuelos."<<endl;
 

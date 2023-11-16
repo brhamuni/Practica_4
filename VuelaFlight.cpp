@@ -7,6 +7,11 @@ VuelaFlight::VuelaFlight() :aeropuertos(),rutas(),airlines() {
     cargarAerolineas("aerolineas_v1.csv");
     cargarRutas("rutas_v1.csv");
     cargarVuelos("infovuelos_v1.csv");
+    cout<<"Hay un total de: "
+        <<getNumAeropuertos()<<" aeropuertos, "
+        <<getNumAerolineas()<<" aerolineas, "
+        <<getNumRutas()<<" rutas, "
+        <<getTamavuelos()<<" vuelos."<<endl;
 }
 
 /**
