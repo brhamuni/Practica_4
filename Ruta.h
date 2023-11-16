@@ -48,7 +48,7 @@ public:
 
     void setFlightRou(list<Vuelo*>flightRou);
 
-    bool addVuelo(Vuelo& v);
+    bool addVuelo(Vuelo* v);
 
     long int  getNumVuelos();
 

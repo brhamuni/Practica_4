@@ -19,11 +19,11 @@ private:
     string pais;
     bool activo;
     std::deque<Ruta*> aerorutas;
-    std::multimap<string,Vuelo*> flights;
+    std::multimap<string,Vuelo> flights;
 public:
-    multimap<string, Vuelo *> &getFlights() ;
+    multimap<string, Vuelo> &getFlights() ;
 
-    void setFlights(const multimap<string, Vuelo *> &flights);
+    void setFlights(const multimap<string, Vuelo> &flights);
 
 public:
     //Constructor por defecto
@@ -69,7 +69,7 @@ public:
     //Setter Aerorutas
     void setAerorutas(const std::deque<Ruta *> &aerorutas);
 
-    Vuelo* addVuelo(Vuelo& v);
+    Vuelo* addVuelo(Vuelo &v);
 
     vector<Vuelo*> getVuelos(std::string fNumber);
     vector<Vuelo*> getVuelos( Fecha fIni,  Fecha fFin);

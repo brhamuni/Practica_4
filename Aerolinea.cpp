@@ -179,33 +179,32 @@ void Aerolinea::setAerorutas(const std::deque<Ruta *> &aerorutas) {
     Aerolinea::aerorutas = aerorutas;
 }
 
-Vuelo* Aerolinea::addVuelo( Vuelo &v) {
+Vuelo* Aerolinea::addVuelo(Vuelo &v) {
     if (!v.getAirpOrigin() || !v.getAirpDestin()|| !v.getLinkaero())
         return nullptr;
 
-    pair<string,Vuelo*> par(v.getFlightNumb(),&v);
-    flights.insert(par);
+    pair<string,Vuelo> par(v.getFlightNumb(),v);
+    Vuelo* nuevoVuelo=&flights.insert(par)->second;
 
     for (int i=0; i<aerorutas.size(); i++) {
         if(aerorutas[i]->getOrigin()->getIata()==v.getAirpOrigin()->getIata() &&
         aerorutas[i]->getCompany()->getIcao()==v.getLinkaero()->getIcao() &&
         aerorutas[i]->getDestination()->getIata()==v.getAirpDestin()->getIata()){
-            aerorutas[i]->addVuelo(*par.second);
-            return &(*par.second);
+            aerorutas[i]->addVuelo(nuevoVuelo);
+            return nuevoVuelo;
         }
     }
-
     return nullptr;
 }
 
 
 vector<Vuelo*> Aerolinea::getVuelos(std::string fNumber) {
     vector<Vuelo*> vuelosFNumber;
-    multimap<string,Vuelo*>::iterator iterador=flights.find(fNumber);
+    multimap<string,Vuelo>::iterator iterador=flights.find(fNumber);
     if(iterador!=flights.end()) {
         for (iterador; iterador != flights.end(); iterador++) {
             if (fNumber == iterador->first)
-                vuelosFNumber.push_back(*(&iterador->second));
+                vuelosFNumber.push_back(&(iterador->second));
         }
     }
 
@@ -214,22 +213,22 @@ vector<Vuelo*> Aerolinea::getVuelos(std::string fNumber) {
 
 vector<Vuelo *> Aerolinea::getVuelos( Fecha fIni, Fecha fFin) {
     vector<Vuelo*> vuelosFecha;
-    multimap<string,Vuelo*>::iterator iterador;
+    multimap<string,Vuelo>::iterator iterador;
     for (iterador=flights.begin();iterador!=flights.end() ; iterador++) {
 
-        if (iterador->second->getFecha() > fIni || iterador->second->getFecha().mismoDia(fIni)&&
-        iterador->second->getFecha() < fFin ||iterador->second->getFecha().mismoDia(fFin)) {
-            vuelosFecha.push_back(*(&iterador->second));
+        if (iterador->second.getFecha() > fIni || iterador->second.getFecha().mismoDia(fIni)&&
+        iterador->second.getFecha() < fFin ||iterador->second.getFecha().mismoDia(fFin)) {
+            vuelosFecha.push_back((&iterador->second));
         }
     }
 
     return  vuelosFecha;
 }
 
-multimap<string, Vuelo *> &Aerolinea::getFlights()  {
+multimap<string, Vuelo> &Aerolinea::getFlights()  {
     return flights;
 }
 
-void Aerolinea::setFlights(const multimap<string, Vuelo *> &flights) {
+void Aerolinea::setFlights(const multimap<string, Vuelo> &flights) {
     Aerolinea::flights = flights;
 }

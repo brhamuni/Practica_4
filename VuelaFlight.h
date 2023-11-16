@@ -33,6 +33,9 @@ private:
     void cargarAerolineas(string fichAerolineas);
 
 public:
+
+    int getNumAeropuertos();
+
     //Constructor por defecto
     VuelaFlight();
     //Constructor copia
@@ -76,14 +79,14 @@ public:
     vector<Vuelo*> buscaVuelos(string fnumber);
     vector<Vuelo*> vuelosOperadorPor(string icaoAerolinea, Fecha fecha);
 
-    set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
+    vector<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
     set<Aeropuerto*>buscaAeropuertosAerolinea(string icaoAerolinea);
 
     vector<Aeropuerto> &getAeropuertos();
 
     void setAeropuertos(const vector<Aeropuerto> &aeropuertos);
 
-    list<Ruta> &getRutas();
+    list<Ruta> getRutas();
 
     void setRutas(const list<Ruta> &rutas);
 

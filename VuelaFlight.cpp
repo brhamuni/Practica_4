@@ -287,8 +287,8 @@ bool VuelaFlight::registrarVuelo(std::string &fNumber, std::string &iataAeroOrig
     itDest= std::lower_bound(aeropuertos.begin(), aeropuertos.end(),destino);
 
     if (itAerolinea!=airlines.end() && itDest!=aeropuertos.end() && itOrig!=aeropuertos.end()){
-        Vuelo* vuelo= new Vuelo(fNumber, plane, datosMeteo, f, &(*itOrig), &(*itDest), &(itAerolinea->second));
-        itAerolinea->second.addVuelo(*vuelo);
+        Vuelo vuelo(fNumber, plane, datosMeteo, f, &(*itOrig), &(*itDest), &(itAerolinea->second));
+        itAerolinea->second.addVuelo(vuelo);
         return true;
     }else {
         return false;
@@ -314,31 +314,48 @@ vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha 
 
 }
 
-set<string> VuelaFlight::buscaVuelosDestAerop(std::string paisOrig, std::string iataAeroDest) {
-    std::map<string,Aerolinea>::iterator iterador;
-    set<string> identificadores;
-    for(iterador=airlines.begin();iterador!=airlines.end();iterador++){
-        std::multimap<string,Vuelo*> vuelos=iterador->second.getFlights();
-        std::multimap<string,Vuelo*>::iterator iteradorvuelos;
-        for (iteradorvuelos=vuelos.begin();iteradorvuelos!=vuelos.end();iteradorvuelos++) {
-            if (iteradorvuelos->second->getAirpDestin()->getIata()==iataAeroDest &&
-            iteradorvuelos->second->getAirpOrigin()->getIsoPais()==paisOrig)
-                identificadores.insert(iteradorvuelos->second->getFlightNumb());
-        }
+vector<string> VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest){
+    vector<string> v;
+    set<string> ids;
 
+    list<Ruta*> rutasPais;
+    std::list<Ruta>::iterator it1=rutas.begin();
+    while (it1!=rutas.end()){
+        if (it1->getOrigin()->getIsoPais()==paisOrig)
+            rutasPais.push_back(&(*it1));
+        it1++;
     }
 
-    return identificadores;
+    list<Vuelo*> vuelos;
+    std::list<Ruta*>::iterator it2=rutasPais.begin();
+    while (it2!=rutasPais.end()){
+        if ((*it2)->getDestination()->getIata()==iataAeroDest) {
+            vuelos = (*it2)->getVuelos();
+            list<Vuelo*>::iterator itVuelos=vuelos.begin();
+            for (; itVuelos!= vuelos.end(); itVuelos++) {
+                ids.insert((*itVuelos)->getFlightNumb());
+            }
+        }
+        it2++;
+    }
+
+    set<string>::iterator it3=ids.begin();
+    while (it3!=ids.end()){
+        v.push_back(*it3);
+        it3++;
+    }
+    return v;
+
 }
 
 set<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(std::string icaoAerolinea) {
     map<string,Aerolinea>::iterator aerolinea=airlines.find(icaoAerolinea);
     set<Aeropuerto*> setAeros;
-    multimap<string,Vuelo*>::iterator vuelosIT=aerolinea->second.getFlights().begin();
+    multimap<string,Vuelo>::iterator vuelosIT=aerolinea->second.getFlights().begin();
 
     for(vuelosIT;vuelosIT!=aerolinea->second.getFlights().end();vuelosIT++){
-        setAeros.insert(vuelosIT->second->getAirpOrigin());
-        setAeros.insert(vuelosIT->second->getAirpDestin());
+        setAeros.insert(vuelosIT->second.getAirpOrigin());
+        setAeros.insert(vuelosIT->second.getAirpDestin());
     }
 
     return setAeros;
@@ -512,6 +529,10 @@ void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
 }
+int VuelaFlight::getNumAeropuertos(){
+    return aeropuertos.size();
+
+}
 
 vector<Aeropuerto> &VuelaFlight::getAeropuertos() {
     return aeropuertos;
@@ -521,7 +542,7 @@ void VuelaFlight::setAeropuertos(const vector<Aeropuerto> &aeropuertos) {
     VuelaFlight::aeropuertos = aeropuertos;
 }
 
-list<Ruta> &VuelaFlight::getRutas() {
+list<Ruta> VuelaFlight::getRutas() {
     return rutas;
 }
 

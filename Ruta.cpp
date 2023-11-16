@@ -3,9 +3,10 @@
 Ruta::~Ruta() {
 }
 
-Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr) {}
+Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr),flightRou() {
+}
 Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination),flightRou(orig.flightRou) {}
-Ruta::Ruta( Aerolinea *company,Aeropuerto *dest,Aeropuerto* orig, list<Vuelo*>  flightRou) :company(company),origin(orig),destination(dest),flightRou(flightRou) {}
+Ruta::Ruta( Aerolinea *company,Aeropuerto *dest,Aeropuerto* orig, list<Vuelo*>  flvuelo) :company(company),origin(orig),destination(dest),flightRou(flvuelo) {}
 
 Aeropuerto *Ruta::getDestination() const {
     return destination;
@@ -39,11 +40,11 @@ void Ruta::setFlightRou(list<Vuelo*>flightRou) {
     Ruta::flightRou = flightRou;
 }
 
-bool Ruta::addVuelo(Vuelo &v) {
-    if(v.getLinkaero()->getIcao()==this->company->getIcao()&&
-       v.getAirpDestin()->getIata()==this->destination->getIata()&&
-       v.getAirpOrigin()->getIata()==this->origin->getIata()){
-        flightRou.push_back(&v);
+bool Ruta::addVuelo(Vuelo *v) {
+    if(v->getLinkaero()->getIcao()==this->company->getIcao()&&
+       v->getAirpDestin()->getIata()==this->destination->getIata()&&
+       v->getAirpOrigin()->getIata()==this->origin->getIata()){
+        flightRou.push_back(v);
         return true;
     }
     return false;
@@ -53,6 +54,7 @@ long Ruta::getNumVuelos() {
     return  flightRou.size();
 }
 
+//cambiar a lista
 list<Vuelo *> Ruta::getVuelos() {
     return flightRou;
 }
