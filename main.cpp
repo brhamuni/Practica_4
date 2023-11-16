@@ -106,7 +106,7 @@ int main(int argc, const char * argv[]) {
     cout<<"El total de vuelos de Spain a London son: "<< vuelosLondon.size() <<" vuelos."<<endl;
 
 #pragma endregion
-
+    
 #pragma region Ejercicio Parejas
 
     set<Aeropuerto*> aeropuertosEVE=vuelaFlight.buscaAeropuertosAerolinea("EVE");
@@ -114,7 +114,7 @@ int main(int argc, const char * argv[]) {
 
     cout<<endl<<"--------------Todos los aeropuertos de la aerolinea EVE: --------------"<<endl;
     for(aeropuertosEVEIT=aeropuertosEVE.begin();aeropuertosEVEIT!=aeropuertosEVE.end();aeropuertosEVEIT++){
-        cout<<"Vuelo: "<<(*aeropuertosEVEIT)->getNombre()<<endl;
+        cout<<"Aeropuerto: "<<(*aeropuertosEVEIT)->getNombre()<<endl;
     }
     cout<<"El total los aeropuertos que son intervenidos por la aerolinea EVE son: "<< aeropuertosEVE.size() <<" vuelos."<<endl;
 
