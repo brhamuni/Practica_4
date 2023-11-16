@@ -3,10 +3,9 @@
 Ruta::~Ruta() {
 }
 
-Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr),flightRou() {
-}
+Ruta::Ruta():company(nullptr),origin(nullptr),destination(nullptr),flightRou() {}
 Ruta::Ruta(const Ruta &orig) :company(orig.company),origin(orig.origin),destination(orig.destination),flightRou(orig.flightRou) {}
-Ruta::Ruta( Aerolinea *company,Aeropuerto *dest,Aeropuerto* orig, list<Vuelo*>  flvuelo) :company(company),origin(orig),destination(dest),flightRou(flvuelo) {}
+Ruta::Ruta( Aerolinea *company,Aeropuerto *dest,Aeropuerto* orig, list<Vuelo*>  flightRou) :company(company),origin(orig),destination(dest),flightRou(flightRou) {}
 
 Aeropuerto *Ruta::getDestination() const {
     return destination;
@@ -54,7 +53,4 @@ long Ruta::getNumVuelos() {
     return  flightRou.size();
 }
 
-//cambiar a lista
-list<Vuelo *> Ruta::getVuelos() {
-    return flightRou;
-}
+

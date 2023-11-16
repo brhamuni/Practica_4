@@ -28,7 +28,7 @@ public:
     //Constructor copia
     Ruta(const Ruta &orig);
     //Constructor paramerizado
-    Ruta(Aerolinea *company,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr, list<Vuelo*>  flightRou=list<Vuelo*>());
+    Ruta(Aerolinea *company= nullptr,Aeropuerto *dest= nullptr,Aeropuerto* orig= nullptr, list<Vuelo*>  flightRou=list<Vuelo*>());
     //Destructor
     virtual ~Ruta();
 
@@ -51,8 +51,6 @@ public:
     bool addVuelo(Vuelo* v);
 
     long int  getNumVuelos();
-
-    list<Vuelo*> getVuelos();
 };
 
 

@@ -59,8 +59,6 @@ std::list<Ruta *> VuelaFlight::buscarRutasOrigen(string idAerOrig) {
         }
     }
     return  lista;
-
-
 }
 
 /**
@@ -79,8 +77,6 @@ std::vector<Aeropuerto * > VuelaFlight::buscarAeropuertoPais(string pais) {
         }
     }
     return  encontrado;
-
-
 }
 /**
  * @brief Metodo para añadir nueva ruta
@@ -95,7 +91,6 @@ void VuelaFlight::addNuevaRuta(Aeropuerto* AerOrig, Aeropuerto* AerDest, Aerolin
             //e. Enlazar la aerolínea encontrada antes con la ruta anterior mediante
             //Aerolinea::linkAerolRuta.
             aerolineaEncontrada->linkAerolRuta(&(rutas.back()));
-
 }
 
 /**
@@ -196,24 +191,6 @@ void VuelaFlight::registrarRutas(string icaoRuta, string origen2, string destino
 void VuelaFlight::ordenarAeropuertos(){
     std::sort(aeropuertos.begin(), aeropuertos.end());
 }
-/**
- * @brief Metodo que devuelve el tamaño del vector
- */
-long VuelaFlight::tamaAeropuertos() {
-    return aeropuertos.size();
-}
-/**
- * @brief Metodo que devuelve el tamaño de la lista de rutas
- */
-long VuelaFlight::tamaRutas() {
-    return rutas.size();
-}
-/**
- * @brief Metodo que devuelve el tamaño del arbol
- */
-long VuelaFlight::tamaWork() {
-    return airlines.size();
-}
 
 void VuelaFlight::cargarVuelos(std::string fichVuelos) {
     std::ifstream is;
@@ -311,41 +288,34 @@ vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha 
     map<string,Aerolinea>::iterator iterador;
     iterador=airlines.find(icaoAerolinea);
     return iterador->second.getVuelos(fecha,fecha);
-
 }
 
-vector<string> VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest){
+set<string> VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest){
     vector<string> v;
-    set<string> ids;
+    set<string> identificadores;
 
-    list<Ruta*> rutasPais;
-    std::list<Ruta>::iterator it1=rutas.begin();
-    while (it1!=rutas.end()){
-        if (it1->getOrigin()->getIsoPais()==paisOrig)
-            rutasPais.push_back(&(*it1));
-        it1++;
+    //Buscamos las rutas del paisOrig
+    list<Ruta> rutasPais;
+    list<Ruta>::iterator rutasIT=rutas.begin();
+    for(rutasIT;rutasIT!=rutas.end();rutasIT++){
+        if (rutasIT->getOrigin()->getIsoPais()==paisOrig) {
+            rutasPais.push_back(*rutasIT);
+        }
     }
 
+    //Metemos todos los vuelos de esa ruta
     list<Vuelo*> vuelos;
-    std::list<Ruta*>::iterator it2=rutasPais.begin();
-    while (it2!=rutasPais.end()){
-        if ((*it2)->getDestination()->getIata()==iataAeroDest) {
-            vuelos = (*it2)->getVuelos();
+    rutasIT=rutasPais.begin();
+    for(rutasIT;rutasIT!=rutasPais.end();rutasIT++){
+        if (rutasIT->getDestination()->getIata()==iataAeroDest) {
+            vuelos = rutasIT->getFlightRou();
             list<Vuelo*>::iterator itVuelos=vuelos.begin();
             for (; itVuelos!= vuelos.end(); itVuelos++) {
-                ids.insert((*itVuelos)->getFlightNumb());
+                identificadores.insert((*itVuelos)->getFlightNumb());
             }
         }
-        it2++;
     }
-
-    set<string>::iterator it3=ids.begin();
-    while (it3!=ids.end()){
-        v.push_back(*it3);
-        it3++;
-    }
-    return v;
-
+    return identificadores;
 }
 
 set<Aeropuerto *> VuelaFlight::buscaAeropuertosAerolinea(std::string icaoAerolinea) {
@@ -529,39 +499,22 @@ void VuelaFlight::cargarAerolineas(std::string fichAerolineas) {
         std::cout << "Error de apertura en archivo" << std::endl;
     }
 }
+
 int VuelaFlight::getNumAeropuertos(){
     return aeropuertos.size();
-
 }
 
-vector<Aeropuerto> &VuelaFlight::getAeropuertos() {
-    return aeropuertos;
+int VuelaFlight::getNumAerolineas(){
+    return airlines.size();
 }
 
-void VuelaFlight::setAeropuertos(const vector<Aeropuerto> &aeropuertos) {
-    VuelaFlight::aeropuertos = aeropuertos;
+int VuelaFlight::getNumRutas() {
+    return rutas.size();
 }
 
-list<Ruta> VuelaFlight::getRutas() {
-    return rutas;
-}
-
-void VuelaFlight::setRutas(const list<Ruta> &rutas) {
-    VuelaFlight::rutas = rutas;
-}
-
-map<string, Aerolinea> &VuelaFlight::getAirlines(){
-    return airlines;
-}
-
-void VuelaFlight::setAirlines(const map<string, Aerolinea> &airlines) {
-    VuelaFlight::airlines = airlines;
-}
-
-long VuelaFlight::getTamavuelos() const {
+int VuelaFlight::getTamavuelos() {
     return tamavuelos;
 }
 
-void VuelaFlight::setTamavuelos(long tamavuelos) {
-    VuelaFlight::tamavuelos = tamavuelos;
-}
+
+

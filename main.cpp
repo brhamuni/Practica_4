@@ -21,23 +21,19 @@
 int main(int argc, const char * argv[]) {
     VuelaFlight vuelaFlight;
 
-    /*    cout<<"Hay un total de: "
-      <<vuelaFlight.getNumAeropuertos() /*   <<" aeropuertos, "
-      <<vuelaFlight.getAirlines().size()<<" aerolineas, "
-      <<vuelaFlight.getRutas().size()<<" rutas, "
-      <<vuelaFlight.getTamavuelos()<<" vuelos."<<endl;
-  */
+    cout<<"Hay un total de: "
+    <<vuelaFlight.getNumAeropuertos()<<" aeropuertos, "
+    <<vuelaFlight.getNumAerolineas()<<" aerolineas, "
+    <<vuelaFlight.getNumRutas()<<" rutas, "
+    <<vuelaFlight.getTamavuelos()<<" vuelos."<<endl;
 #pragma region Ejercicio 2 (AEA5201 VLG2021)
 
-    string aerolinea1="AEA5201";
-   // map<string,Aerolinea>::iterator aerolineaAEA=vuelaFlight.getAirlines().find(aerolinea1.substr(0,3));
     vector<Vuelo*> vueloAEA =vuelaFlight.buscaVuelos("AEA5201");
-
     //Si el vector tiene algun elemento significa que tiene vuelos
     if(vueloAEA.size() != 0){
-       // cout<<endl<<"El vuelo AEA5201 es realizado con la aerolinea: "<<aerolineaAEA->second.getNombre()
-        //<<", con pais: "<<aerolineaAEA->second.getPais()
-        cout<<", origen: "<<vueloAEA[1]->getAirpOrigin()->getIata()
+        cout<<endl<<"El vuelo AEA5201 es realizado con la aerolinea: "<<vueloAEA[1]->getLinkaero()->getNombre()
+        <<", con pais: "<<vueloAEA[1]->getLinkaero()->getPais()
+        <<", origen: "<<vueloAEA[1]->getAirpOrigin()->getIata()
         <<", destino: "<<vueloAEA[1]->getAirpDestin()->getIata()<<endl;
         cout<<"--------------VUELOS CON AEA: --------------"<<endl;
         for (int i = 0; i < vueloAEA.size(); ++i) {
@@ -49,14 +45,11 @@ int main(int argc, const char * argv[]) {
     }else
         cout<<"El vuelo AEA5201 no existe"<<endl;
 
-    aerolinea1="VLG2021";
-    map<string,Aerolinea>::iterator aerolineaVLG=vuelaFlight.getAirlines().find(aerolinea1.substr(0,3));
-    vector<Vuelo*> vueloVLG =(*aerolineaVLG).second.getVuelos("VLG2021");
-
+    vector<Vuelo*> vueloVLG =vuelaFlight.buscaVuelos("VLG2021");
     //Si el vector tiene algun elemento significa que tiene vuelos
     if(vueloVLG.size()!=0){
-        cout<<"El vuelo VLG2021 es realizado con la aerolinea: "<<aerolineaVLG->second.getNombre()
-        <<", con pais: "<<aerolineaVLG->second.getPais()
+        cout<<"El vuelo VLG2021 es realizado con la aerolinea: "<<vueloVLG[1]->getLinkaero()->getNombre()
+            <<", con pais: "<<vueloVLG[1]->getLinkaero()->getPais()
         <<", origen: "<<vueloVLG[1]->getAirpOrigin()->getIata()
         <<", destino: "<<vueloVLG[1]->getAirpDestin()->getIata()<<endl;
         cout<<"--------------VUELOS CON VLG: --------------"<<endl;
@@ -96,20 +89,20 @@ int main(int argc, const char * argv[]) {
     for(rutasIT=lista.begin();rutasIT!=lista.end();rutasIT++){
         cout<<"La ruta: "<<rutasIT->getNumVuelos()<<" vuelos"<<endl;
     }*/
-    vector<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("ES","LHR");
-    vector<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("ES","STN");
-    vector<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("ES","LTN");
-    vector<string> vuelosLGW=vuelaFlight.buscaVuelosDestAerop("ES","LGW");
+    set<string> vuelosLHR=vuelaFlight.buscaVuelosDestAerop("ES","LHR");
+    set<string> vuelosSTN=vuelaFlight.buscaVuelosDestAerop("ES","STN");
+    set<string> vuelosLTN=vuelaFlight.buscaVuelosDestAerop("ES","LTN");
+    set<string> vuelosLGW=vuelaFlight.buscaVuelosDestAerop("ES","LGW");
 
-    vector<string> vuelosLondon;
+    set<string> vuelosLondon;
     //Concatenamos los vuelos para dejarlos todos en vuelosLondon
-    vuelosLondon.insert(vuelosLondon.end(),vuelosLHR.begin(), vuelosLHR.end());
-    vuelosLondon.insert(vuelosLondon.end(),vuelosSTN.begin(), vuelosSTN.end());
-    vuelosLondon.insert(vuelosLondon.end(),vuelosLTN.begin(), vuelosLTN.end());
-    vuelosLondon.insert(vuelosLondon.end(),vuelosLGW.begin(), vuelosLGW.end());
+    vuelosLondon.insert(vuelosLHR.begin(), vuelosLHR.end());
+    vuelosLondon.insert(vuelosSTN.begin(), vuelosSTN.end());
+    vuelosLondon.insert(vuelosLTN.begin(), vuelosLTN.end());
+    vuelosLondon.insert(vuelosLGW.begin(), vuelosLGW.end());
 
     cout<<endl<<"--------------Todos los vuelos a Londres que salen desde Spain: --------------"<<endl;
-    vector<string>::iterator vuelosLondonIT;
+    set<string>::iterator vuelosLondonIT;
     for(vuelosLondonIT=vuelosLondon.begin();vuelosLondonIT!=vuelosLondon.end();vuelosLondonIT++){
         cout<<"Vuelo: "<<*vuelosLondonIT<<endl;
     }

@@ -23,8 +23,7 @@ private:
     std::vector<Aeropuerto> aeropuertos;
     std::list<Ruta> rutas;
     std::map<string,Aerolinea> airlines;
-
-    long int tamavuelos=0;
+    int tamavuelos=0;
 
     //Metodos privados para cargar cada uno de los csv
     void cargarVuelos(string fichVuelos);
@@ -33,9 +32,6 @@ private:
     void cargarAerolineas(string fichAerolineas);
 
 public:
-
-    int getNumAeropuertos();
-
     //Constructor por defecto
     VuelaFlight();
     //Constructor copia
@@ -67,36 +63,16 @@ public:
     void registrarRutas(string icaoRuta, string origen2, string destino2);
     //Metodo que ordenar Aeropuertos
     void ordenarAeropuertos();
-    //Devuelve el tamaño de aeropuertos
-    long tamaAeropuertos ();
-    //Devuelve el tamaño de rutas
-    long tamaRutas();
-    //Devuelve el tamaño del Arbol
-    long tamaWork();
+    int getTamavuelos();
+    int getNumAeropuertos();
+    int getNumAerolineas();
+    int getNumRutas();
 
     bool registrarVuelo(string& fNumber, string& iataAeroOrig, string& iataAeroDest, string& plane, string& datosMeteo, Fecha f);
-
     vector<Vuelo*> buscaVuelos(string fnumber);
     vector<Vuelo*> vuelosOperadorPor(string icaoAerolinea, Fecha fecha);
-
-    vector<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
+    set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
     set<Aeropuerto*>buscaAeropuertosAerolinea(string icaoAerolinea);
-
-    vector<Aeropuerto> &getAeropuertos();
-
-    void setAeropuertos(const vector<Aeropuerto> &aeropuertos);
-
-    list<Ruta> getRutas();
-
-    void setRutas(const list<Ruta> &rutas);
-
-    map<string, Aerolinea> &getAirlines();
-
-    void setAirlines(const map<string, Aerolinea> &airlines);
-
-    long getTamavuelos() const;
-
-    void setTamavuelos(long tamavuelos);
 };
 
 
