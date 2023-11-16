@@ -74,7 +74,7 @@ public:
     set<string> buscaVuelosDestAerop(string paisOrig, string iataAeroDest);
     set<Aeropuerto*>buscaAeropuertosAerolinea(string icaoAerolinea);
 
-    list<Ruta> buscarRutasPaisOrig(string paisOrig);
+    list<Ruta*> buscarRutasPaisOrig(string paisOrig);
 };
 
 

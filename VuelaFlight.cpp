@@ -292,15 +292,15 @@ vector<Vuelo *> VuelaFlight::vuelosOperadorPor(std::string icaoAerolinea, Fecha 
 
 set<string> VuelaFlight::buscaVuelosDestAerop(string paisOrig, string iataAeroDest){
     //Primero obtengo los aeropuertos por pais
-    list<Ruta> rutasOrig = buscarRutasPaisOrig(paisOrig);
+    list<Ruta*> rutasOrig = buscarRutasPaisOrig(paisOrig);
     //Conjunto set con los identifcadores del vuelo
     set<string> identificadores;
 
     //Recorremos las rutas
-    list<Ruta>::iterator rutasIT = rutasOrig.begin();
+    list<Ruta*>::iterator rutasIT = rutasOrig.begin();
     for (rutasIT;rutasIT!=rutasOrig.end(); ++rutasIT) {
-        if(iataAeroDest == rutasIT->getDestination()->getIata()){
-            for (Vuelo *vuelo : rutasIT->getFlightRou()) {
+        if(iataAeroDest == (*rutasIT)->getDestination()->getIata()){
+            for (Vuelo *vuelo : (*rutasIT)->getFlightRou()) {
                 identificadores.insert(vuelo->getFlightNumb());
             }
         }
@@ -512,18 +512,18 @@ int VuelaFlight::getTamavuelos() {
  * @param pOrig
  * @return
  */
-list<Ruta > VuelaFlight::buscarRutasPaisOrig(string paisOrig) {
+list<Ruta*> VuelaFlight::buscarRutasPaisOrig(string paisOrig) {
     list<Ruta>::iterator rutasIT;
-    list<Ruta > lista;
+    list<Ruta*> lista;
     //Recorremos todos los aeropuertos
     for(rutasIT=rutas.begin(); rutasIT!=rutas.end();rutasIT++){
         //Obtenemos los datos
-        string origenBusq = rutasIT->getOrigin()->getIsoPais();
+        string origenBusq = (*rutasIT).getOrigin()->getIsoPais();
         //En caso de que se encuentre
         if(origenBusq==paisOrig){
             //Devolvemos el dato
             //El iterador no es como un puntero y entonces lo que hacemos es devolver el dato * y su direccion &
-            lista.push_back(*rutasIT);
+            lista.push_back(&(*rutasIT));
         }
     }
     return  lista;
